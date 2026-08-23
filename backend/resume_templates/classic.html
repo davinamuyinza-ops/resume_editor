@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+    @page { size: {{ style.pageSize }}; margin: {{ style.margin }}; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: {{ style.fontFamily }};
+        color: #111;
+        font-size: {{ style.fontSize }};
+        line-height: {{ style.lineHeight }};
+    }
+    h1 { font-size: 1.9em; color: {{ style.primaryColor }}; }
+    .headline { color: #444; font-size: 1.05em; margin-top: 2px; }
+    .contact-row { margin-top: 8px; color: #333; }
+    .contact-row span { margin-right: 14px; }
+    .photo { float: right; width: 70px; height: 70px; border-radius: 50%; object-fit: cover; }
+    section { margin-top: 14px; }
+    .section-title {
+        color: {{ style.primaryColor }};
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-size: 0.85em;
+        border-bottom: 1.5px solid {{ style.primaryColor }};
+        padding-bottom: 3px;
+        margin-bottom: 8px;
+    }
+    .item { margin-bottom: 9px; }
+    .item-row { display: flex; justify-content: space-between; }
+    .item-row .left { font-weight: bold; }
+    .item-row .right { color: #555; }
+    .item-sub { color: #444; margin-top: 1px; }
+    .item-desc { margin-top: 3px; }
+    .item-desc ul { padding-left: 18px; }
+    .skills-list, .languages-list { display: flex; flex-wrap: wrap; gap: 10px 24px; }
+    .skill-name { font-weight: bold; }
+    .skill-keywords { color: #555; }
+</style>
+</head>
+<body>
+
+    {% if not resume.picture.hidden and resume.picture.url %}
+        <img class="photo" src="{{ resume.picture.url }}" alt="">
+    {% endif %}
+
+    <h1>{{ resume.basics.name }}</h1>
+    <div class="headline">{{ resume.basics.headline }}</div>
+    <div class="contact-row">
+        {% if resume.basics.email %}<span>{{ resume.basics.email }}</span>{% endif %}
+        {% if resume.basics.phone %}<span>{{ resume.basics.phone }}</span>{% endif %}
+        {% if resume.basics.location %}<span>{{ resume.basics.location }}</span>{% endif %}
+        {% if resume.basics.website and resume.basics.website.url %}
+            <span>{{ resume.basics.website.label or resume.basics.website.url }}</span>
+        {% endif %}
+        {% for field in resume.basics.customFields or [] %}
+            <span>{{ field.text }}</span>
+        {% endfor %}
+    </div>
+
+    {% for key in section_order %}
+        {% if key == "summary" and resume.summary and not resume.summary.hidden and resume.summary.content %}
+        <section>
+            <div class="section-title">{{ resume.summary.title or "Summary" }}</div>
+            <div>{{ resume.summary.content | safe }}</div>
+        </section>
+
+        {% elif key == "experience" and resume.sections.experience and not resume.sections.experience.hidden and resume.sections.experience['items'] %}
+        {% set experience = resume.sections.experience %}
+        <section>
+            <div class="section-title">{{ experience.title }}</div>
+            {% for item in experience['items'] if not item.hidden %}
+            <div class="item">
+                <div class="item-row"><span class="left">{{ item.company }}</span><span class="right">{{ item.location }}</span></div>
+                <div class="item-row"><span class="item-sub">{{ item.position }}</span><span class="right">{{ item.period }}</span></div>
+                <div class="item-desc">{{ item.description | safe }}</div>
+            </div>
+            {% endfor %}
+        </section>
+
+        {% elif key == "education" and resume.sections.education and not resume.sections.education.hidden and resume.sections.education['items'] %}
+        {% set education = resume.sections.education %}
+        <section>
+            <div class="section-title">{{ education.title }}</div>
+            {% for item in education['items'] if not item.hidden %}
+            <div class="item">
+                <div class="item-row"><span class="left">{{ item.school }}</span><span class="right">{{ item.period }}</span></div>
+                <div class="item-row"><span class="item-sub">{{ item.degree }}{% if item.area %}, {{ item.area }}{% endif %}</span>{% if item.grade %}<span class="right">{{ item.grade }}</span>{% endif %}</div>
+            </div>
+            {% endfor %}
+        </section>
+
+        {% elif key == "projects" and resume.sections.projects and not resume.sections.projects.hidden and resume.sections.projects['items'] %}
+        {% set projects = resume.sections.projects %}
+        <section>
+            <div class="section-title">{{ projects.title }}</div>
+            {% for item in projects['items'] if not item.hidden %}
+            <div class="item">
+                <div class="item-row"><span class="left">{{ item.name }}</span><span class="right">{{ item.period }}</span></div>
+                <div class="item-desc">{{ item.description | safe }}</div>
+            </div>
+            {% endfor %}
+        </section>
+
+        {% elif key == "skills" and resume.sections.skills and not resume.sections.skills.hidden and resume.sections.skills['items'] %}
+        {% set skills = resume.sections.skills %}
+        <section>
+            <div class="section-title">{{ skills.title }}</div>
+            <div class="skills-list">
+            {% for item in skills['items'] if not item.hidden %}
+                <div><span class="skill-name">{{ item.name }}:</span> <span class="skill-keywords">{{ item.keywords | join(', ') }}</span></div>
+            {% endfor %}
+            </div>
+        </section>
+
+        {% elif key == "languages" and resume.sections.languages and not resume.sections.languages.hidden and resume.sections.languages['items'] %}
+        {% set languages = resume.sections.languages %}
+        <section>
+            <div class="section-title">{{ languages.title }}</div>
+            <div class="languages-list">
+            {% for item in languages['items'] if not item.hidden %}
+                <div>{{ item.language }} &mdash; {{ item.fluency }} ({{ '●' * item.level }}{{ '○' * (5 - item.level) }})</div>
+            {% endfor %}
+            </div>
+        </section>
+
+        {% elif key == "volunteer" and resume.sections.volunteer and not resume.sections.volunteer.hidden and resume.sections.volunteer['items'] %}
+        {% set volunteer = resume.sections.volunteer %}
+        <section>
+            <div class="section-title">{{ volunteer.title }}</div>
+            {% for item in volunteer['items'] if not item.hidden %}
+            <div class="item">
+                <div class="item-row"><span class="left">{{ item.organization }}</span><span class="right">{{ item.period }}</span></div>
+                <div class="item-desc">{{ item.description | safe }}</div>
+            </div>
+            {% endfor %}
+        </section>
+
+        {% elif key == "certifications" and resume.sections.certifications and not resume.sections.certifications.hidden and resume.sections.certifications['items'] %}
+        {% set certifications = resume.sections.certifications %}
+        <section>
+            <div class="section-title">{{ certifications.title }}</div>
+            {% for item in certifications['items'] if not item.hidden %}
+            <div class="item">
+                <div class="item-row"><span class="left">{{ item.name }}</span><span class="right">{{ item.date }}</span></div>
+                <div class="item-sub">{{ item.issuer }}</div>
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+    {% endfor %}
+
+    {% for custom in resume.customSections or [] if not custom.hidden %}
+    <section>
+        <div class="section-title">{{ custom.title }}</div>
+        {% for item in custom['items'] or [] if not item.hidden %}
+        <div class="item">
+            <div class="item-row"><span class="left">{{ item.name }}</span><span class="right">{{ item.period }}</span></div>
+            <div class="item-desc">{{ item.description | safe }}</div>
+        </div>
+        {% endfor %}
+    </section>
+    {% endfor %}
+
+</body>
+</html>

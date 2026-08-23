@@ -1,0 +1,33 @@
+from fastapi import APIRouter
+from fastapi.responses import Response
+from pydantic import BaseModel
+
+from app.services.ats_check import check_ats_friendliness
+from app.services.resume_render import render_resume_html, render_resume_pdf
+
+router = APIRouter()
+
+
+class ResumeRequest(BaseModel):
+    resume_json: dict
+
+
+@router.post("/render-preview")
+def render_preview(payload: ResumeRequest):
+    html_content = render_resume_html(payload.resume_json)
+    return Response(content=html_content, media_type="text/html")
+
+
+@router.post("/export-pdf")
+def export_pdf(payload: ResumeRequest):
+    pdf_bytes = render_resume_pdf(payload.resume_json)
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={"Content-Disposition": "attachment; filename=resume.pdf"},
+    )
+
+
+@router.post("/ats-check")
+def ats_check(payload: ResumeRequest):
+    return check_ats_friendliness(payload.resume_json)
