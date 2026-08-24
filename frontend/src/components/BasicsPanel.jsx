@@ -19,7 +19,10 @@ export default function BasicsPanel() {
             <div className="basics-section">
                 <div className="basics-section-title">Photo</div>
                 <div className="photo-row">
-                    <div className="photo-preview">
+                    <div
+                        className="photo-preview"
+                        style={{ width: Math.min(picture.size || 70, 100), height: Math.min(picture.size || 70, 100) }}
+                    >
                         {!picture.hidden && picture.url ? (
                             <img src={picture.url} alt="" />
                         ) : (
@@ -34,6 +37,17 @@ export default function BasicsPanel() {
                                 value={picture.url || ""}
                                 placeholder="https://..."
                                 onChange={(e) => updatePictureField("url", e.target.value)}
+                            />
+                        </label>
+                        <label className="item-field item-field-full">
+                            <span>Size ({picture.size || 70}px)</span>
+                            <input
+                                type="range"
+                                min="40"
+                                max="160"
+                                step="5"
+                                value={picture.size || 70}
+                                onChange={(e) => updatePictureField("size", Number(e.target.value))}
                             />
                         </label>
                         <label className="checkbox-field">

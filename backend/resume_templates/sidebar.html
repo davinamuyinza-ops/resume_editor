@@ -23,7 +23,7 @@
         width: 66%;
         padding: {{ style.margin }};
     }
-    .photo { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; margin-bottom: 12px; }
+    .photo { width: {{ resume.picture.size or 90 }}px; height: {{ resume.picture.size or 90 }}px; border-radius: 50%; object-fit: cover; margin-bottom: 12px; }
     h1 { font-size: 1.5em; }
     .headline { opacity: 0.85; font-size: 0.95em; margin-top: 2px; }
     .sidebar section { margin-top: 16px; }
