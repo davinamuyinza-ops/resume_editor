@@ -1,6 +1,15 @@
 import Slider from "./Slider.jsx";
 import { useResumeStore } from "../store/resumeStore.js";
 
+const ICON_OPTIONS = [
+    { value: "", label: "🔗 Generic" },
+    { value: "linkedin", label: "LinkedIn" },
+    { value: "github", label: "GitHub" },
+    { value: "twitter", label: "Twitter / X" },
+    { value: "website", label: "🌐 Website" },
+    { value: "email", label: "✉️ Email" },
+];
+
 export default function BasicsPanel() {
     const resume = useResumeStore((state) => state.resume);
     const updateBasicsField = useResumeStore((state) => state.updateBasicsField);
@@ -114,9 +123,21 @@ export default function BasicsPanel() {
                 {customFields.map((field) => (
                     <div key={field.id} className="item-card custom-field-row">
                         <label className="item-field">
+                            <span>Icon</span>
+                            <select
+                                value={field.icon || ""}
+                                onChange={(e) => updateCustomField(field.id, "icon", e.target.value)}
+                            >
+                                {ICON_OPTIONS.map((opt) => (
+                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                ))}
+                            </select>
+                        </label>
+                        <label className="item-field">
                             <span>Text</span>
                             <input
                                 type="text"
+                                placeholder="LinkedIn"
                                 value={field.text || ""}
                                 onChange={(e) => updateCustomField(field.id, "text", e.target.value)}
                             />
@@ -125,6 +146,7 @@ export default function BasicsPanel() {
                             <span>Link</span>
                             <input
                                 type="text"
+                                placeholder="https://linkedin.com/in/..."
                                 value={field.link || ""}
                                 onChange={(e) => updateCustomField(field.id, "link", e.target.value)}
                             />

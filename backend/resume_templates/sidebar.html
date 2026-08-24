@@ -37,6 +37,23 @@
         opacity: 0.9;
     }
     .sidebar .contact-item { margin-bottom: 5px; word-break: break-word; }
+    .link-chip { color: white; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+    .icon-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+        font-size: 8px;
+        font-weight: 800;
+        color: white;
+        line-height: 1;
+        flex-shrink: 0;
+    }
+    .icon-badge-linkedin { background: #0a66c2; }
+    .icon-badge-github { background: #3a3a3a; }
+    .icon-badge-twitter { background: #000000; border: 1px solid rgba(255,255,255,0.3); }
     .sidebar .skill-item, .sidebar .language-item { margin-bottom: 6px; }
     .sidebar .skill-keywords { opacity: 0.8; font-size: 0.92em; }
 
@@ -74,8 +91,22 @@
             {% if resume.basics.phone %}<div class="contact-item">{{ resume.basics.phone }}</div>{% endif %}
             {% if resume.basics.location %}<div class="contact-item">{{ resume.basics.location }}</div>{% endif %}
             {% if resume.basics.website and resume.basics.website.url %}
-                <div class="contact-item">{{ resume.basics.website.label or resume.basics.website.url }}</div>
+                <div class="contact-item"><a class="link-chip" href="{{ resume.basics.website.url }}" target="_blank">🌐 {{ resume.basics.website.label or resume.basics.website.url }}</a></div>
             {% endif %}
+            {% for field in resume.basics.customFields or [] %}
+                <div class="contact-item">
+                    <a class="link-chip" href="{{ field.link }}" target="_blank">
+                        {% if field.icon == "linkedin" %}<span class="icon-badge icon-badge-linkedin">in</span>
+                        {% elif field.icon == "github" %}<span class="icon-badge icon-badge-github">gh</span>
+                        {% elif field.icon == "twitter" %}<span class="icon-badge icon-badge-twitter">X</span>
+                        {% elif field.icon == "email" %}✉️
+                        {% elif field.icon == "website" %}🌐
+                        {% else %}🔗
+                        {% endif %}
+                        {{ field.text }}
+                    </a>
+                </div>
+            {% endfor %}
         </section>
 
         {% set skills = resume.sections.skills %}

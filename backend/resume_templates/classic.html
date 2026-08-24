@@ -14,8 +14,24 @@
     }
     h1 { font-size: 1.9em; color: {{ style.primaryColor }}; }
     .headline { color: #444; font-size: 1.05em; margin-top: 2px; }
-    .contact-row { margin-top: 8px; color: #333; }
-    .contact-row span { margin-right: 14px; }
+    .contact-row { margin-top: 8px; color: #333; display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; }
+    .contact-row span { display: inline-flex; align-items: center; }
+    .link-chip { color: #333; text-decoration: none; display: inline-flex; align-items: center; gap: 3px; }
+    .icon-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+        font-size: 8px;
+        font-weight: 800;
+        color: white;
+        line-height: 1;
+    }
+    .icon-badge-linkedin { background: #0a66c2; }
+    .icon-badge-github { background: #181717; }
+    .icon-badge-twitter { background: #000000; }
     .photo { float: right; width: {{ resume.picture.size or 70 }}px; height: {{ resume.picture.size or 70 }}px; border-radius: 0; object-fit: cover; margin-left: 16px; margin-bottom: 8px; }
     section { margin-top: {{ style.sectionSpacing }}px; }
     .section-title {
@@ -52,10 +68,19 @@
         {% if resume.basics.phone %}<span>{{ resume.basics.phone }}</span>{% endif %}
         {% if resume.basics.location %}<span>{{ resume.basics.location }}</span>{% endif %}
         {% if resume.basics.website and resume.basics.website.url %}
-            <span>{{ resume.basics.website.label or resume.basics.website.url }}</span>
+            <a class="link-chip" href="{{ resume.basics.website.url }}" target="_blank">🌐 {{ resume.basics.website.label or resume.basics.website.url }}</a>
         {% endif %}
         {% for field in resume.basics.customFields or [] %}
-            <span>{{ field.text }}</span>
+            <a class="link-chip" href="{{ field.link }}" target="_blank">
+                {% if field.icon == "linkedin" %}<span class="icon-badge icon-badge-linkedin">in</span>
+                {% elif field.icon == "github" %}<span class="icon-badge icon-badge-github">gh</span>
+                {% elif field.icon == "twitter" %}<span class="icon-badge icon-badge-twitter">X</span>
+                {% elif field.icon == "email" %}✉️
+                {% elif field.icon == "website" %}🌐
+                {% else %}🔗
+                {% endif %}
+                {{ field.text }}
+            </a>
         {% endfor %}
     </div>
 

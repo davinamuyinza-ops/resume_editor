@@ -743,9 +743,17 @@ button {
 
 .custom-field-row {
     display: grid;
-    grid-template-columns: 1fr 1fr auto;
+    grid-template-columns: 110px 1fr 1fr auto;
     gap: 8px;
     align-items: end;
+}
+
+.custom-field-row select {
+    padding: 7px 6px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    font-family: inherit;
 }
 
 .add-link-button {
