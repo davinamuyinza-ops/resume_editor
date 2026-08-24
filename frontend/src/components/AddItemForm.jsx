@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import RichTextEditor from "./RichTextEditor.jsx";
 import { ADDABLE_SECTIONS, blankItem, DESCRIPTION_SECTIONS, FIELD_LAYOUTS, SECTION_LABELS } from "../sectionMeta.js";
 import { useResumeStore } from "../store/resumeStore.js";
 
@@ -30,8 +31,8 @@ export default function AddItemForm() {
             for (const layoutField of FIELD_LAYOUTS[sectionKey] || []) {
                 item[layoutField.key] = fields[layoutField.key] || "";
             }
-            if (DESCRIPTION_SECTIONS.has(sectionKey) && fields.description) {
-                item.description = `<p>${fields.description}</p>`;
+            if (DESCRIPTION_SECTIONS.has(sectionKey)) {
+                item.description = fields.description || "";
             }
         }
 
@@ -91,11 +92,9 @@ export default function AddItemForm() {
                 {DESCRIPTION_SECTIONS.has(sectionKey) && (
                     <label className="item-field item-field-full">
                         <span>Description</span>
-                        <textarea
-                            rows={3}
+                        <RichTextEditor
                             value={fields.description || ""}
-                            onChange={(e) => handleFieldChange("description", e.target.value)}
-                            placeholder="You can format this further with the rich text editor after adding it."
+                            onChange={(html) => handleFieldChange("description", html)}
                         />
                     </label>
                 )}

@@ -15,8 +15,8 @@
     .headline { color: #444; font-size: 1.05em; margin-top: 2px; }
     .contact-row { margin-top: 8px; color: #333; }
     .contact-row span { margin-right: 14px; }
-    .photo { float: right; width: {{ resume.picture.size or 70 }}px; height: {{ resume.picture.size or 70 }}px; border-radius: 50%; object-fit: cover; }
-    section { margin-top: 14px; }
+    .photo { float: right; width: {{ resume.picture.size or 70 }}px; height: {{ resume.picture.size or 70 }}px; border-radius: 0; object-fit: cover; margin-left: 16px; margin-bottom: 8px; }
+    section { margin-top: 20px; }
     .section-title {
         color: {{ style.primaryColor }};
         text-transform: uppercase;
@@ -26,7 +26,7 @@
         padding-bottom: 3px;
         margin-bottom: 8px;
     }
-    .item { margin-bottom: 9px; }
+    .item { margin-bottom: 13px; }
     .item-row { display: flex; justify-content: space-between; }
     .item-row .left { font-weight: bold; }
     .item-row .right { color: #555; }
@@ -61,7 +61,7 @@
     {% for key in section_order %}
         {% if key == "summary" and resume.summary and not resume.summary.hidden and resume.summary.content %}
         <section>
-            <div class="section-title">{{ resume.summary.title or "Summary" }}</div>
+            <div class="section-title">{{ resume.summary.title or "Profile" }}</div>
             <div>{{ resume.summary.content | safe }}</div>
         </section>
 

@@ -5,8 +5,9 @@ import { useState } from "react";
 
 import AddItemForm from "./AddItemForm.jsx";
 import ItemFields from "./ItemFields.jsx";
+import Modal from "./Modal.jsx";
 import RichTextEditor from "./RichTextEditor.jsx";
-import { DEFAULT_ORDER, MOVABLE_SECTIONS, SECTION_LABELS } from "../sectionMeta.js";
+import { DEFAULT_ORDER, itemSummary, MOVABLE_SECTIONS, SECTION_LABELS } from "../sectionMeta.js";
 import { useResumeStore } from "../store/resumeStore.js";
 
 function SortableSection({ sectionKey, expanded, onToggleExpand, children }) {
@@ -73,6 +74,20 @@ function ItemToolbar({ sectionKey, item, items, index }) {
     );
 }
 
+function ItemRow({ sectionKey, item, index, items, onEdit }) {
+    const summary = itemSummary(sectionKey, item);
+
+    return (
+        <div className="item-row-compact">
+            <button className="item-row-summary" onClick={() => onEdit({ sectionKey, itemId: item.id })}>
+                <span className="item-row-primary">{summary.primary}</span>
+                {summary.secondary && <span className="item-row-secondary">{summary.secondary}</span>}
+            </button>
+            <ItemToolbar sectionKey={sectionKey} item={item} items={items} index={index} />
+        </div>
+    );
+}
+
 export default function SectionList() {
     const resume = useResumeStore((state) => state.resume);
     const setSectionOrder = useResumeStore((state) => state.setSectionOrder);
@@ -80,6 +95,7 @@ export default function SectionList() {
     const updateItemField = useResumeStore((state) => state.updateItemField);
     const moveItemBetweenSections = useResumeStore((state) => state.moveItemBetweenSections);
     const [expandedKey, setExpandedKey] = useState("experience");
+    const [editingItem, setEditingItem] = useState(null);
 
     const order = resume.metadata?.sectionOrder || DEFAULT_ORDER;
 
@@ -91,6 +107,10 @@ export default function SectionList() {
         const newIndex = order.indexOf(over.id);
         setSectionOrder(arrayMove(order, oldIndex, newIndex));
     }
+
+    const editingItemData = editingItem
+        ? resume.sections[editingItem.sectionKey]?.items?.find((i) => i.id === editingItem.itemId)
+        : null;
 
     return (
         <>
@@ -109,88 +129,97 @@ export default function SectionList() {
                                 <RichTextEditor value={resume.summary?.content} onChange={updateSummaryContent} />
                             )}
 
-                            {key === "skills" &&
-                                resume.sections.skills?.items?.map((item, index) => (
-                                    <div key={item.id} className="item-card">
-                                        <label className="item-field">
-                                            <span>Category name</span>
-                                            <input
-                                                type="text"
-                                                value={item.name || ""}
-                                                onChange={(e) => updateItemField("skills", item.id, "name", e.target.value)}
-                                            />
-                                        </label>
-                                        <label className="item-field item-field-full">
-                                            <span>Keywords (comma-separated)</span>
-                                            <input
-                                                type="text"
-                                                value={(item.keywords || []).join(", ")}
-                                                onChange={(e) =>
-                                                    updateItemField(
-                                                        "skills",
-                                                        item.id,
-                                                        "keywords",
-                                                        e.target.value.split(",").map((k) => k.trim()).filter(Boolean)
-                                                    )
-                                                }
-                                            />
-                                        </label>
-                                        <ItemToolbar sectionKey="skills" item={item} items={resume.sections.skills.items} index={index} />
-                                    </div>
-                                ))}
-
-                            {key === "languages" &&
-                                resume.sections.languages?.items?.map((item, index) => (
-                                    <div key={item.id} className="item-card">
-                                        <label className="item-field">
-                                            <span>Language</span>
-                                            <input
-                                                type="text"
-                                                value={item.language || ""}
-                                                onChange={(e) => updateItemField("languages", item.id, "language", e.target.value)}
-                                            />
-                                        </label>
-                                        <label className="item-field">
-                                            <span>Fluency</span>
-                                            <input
-                                                type="text"
-                                                value={item.fluency || ""}
-                                                onChange={(e) => updateItemField("languages", item.id, "fluency", e.target.value)}
-                                            />
-                                        </label>
-                                        <ItemToolbar sectionKey="languages" item={item} items={resume.sections.languages.items} index={index} />
-                                    </div>
-                                ))}
-
-                            {MOVABLE_SECTIONS.includes(key) &&
+                            {key !== "summary" &&
                                 resume.sections[key]?.items?.map((item, index) => (
-                                    <div key={item.id} className="item-card">
-                                        <ItemFields sectionKey={key} item={item} />
-                                        <div className="item-card-footer">
-                                            <label className="move-item-select">
-                                                <span>Move to:</span>
-                                                <select
-                                                    value=""
-                                                    onChange={(event) => {
-                                                        if (event.target.value) {
-                                                            moveItemBetweenSections(key, event.target.value, item.id);
-                                                        }
-                                                    }}
-                                                >
-                                                    <option value="">Choose section...</option>
-                                                    {MOVABLE_SECTIONS.filter((s) => s !== key).map((s) => (
-                                                        <option key={s} value={s}>{SECTION_LABELS[s]}</option>
-                                                    ))}
-                                                </select>
-                                            </label>
-                                            <ItemToolbar sectionKey={key} item={item} items={resume.sections[key].items} index={index} />
-                                        </div>
-                                    </div>
+                                    <ItemRow
+                                        key={item.id}
+                                        sectionKey={key}
+                                        item={item}
+                                        index={index}
+                                        items={resume.sections[key].items}
+                                        onEdit={setEditingItem}
+                                    />
                                 ))}
                         </SortableSection>
                     ))}
                 </SortableContext>
             </DndContext>
+
+            {editingItem && editingItemData && (
+                <Modal title={SECTION_LABELS[editingItem.sectionKey]} onClose={() => setEditingItem(null)}>
+                    {editingItem.sectionKey === "skills" && (
+                        <div className="item-fields">
+                            <label className="item-field">
+                                <span>Category name</span>
+                                <input
+                                    type="text"
+                                    value={editingItemData.name || ""}
+                                    onChange={(e) => updateItemField("skills", editingItemData.id, "name", e.target.value)}
+                                />
+                            </label>
+                            <label className="item-field item-field-full">
+                                <span>Keywords (comma-separated)</span>
+                                <input
+                                    type="text"
+                                    value={(editingItemData.keywords || []).join(", ")}
+                                    onChange={(e) =>
+                                        updateItemField(
+                                            "skills",
+                                            editingItemData.id,
+                                            "keywords",
+                                            e.target.value.split(",").map((k) => k.trim()).filter(Boolean)
+                                        )
+                                    }
+                                />
+                            </label>
+                        </div>
+                    )}
+
+                    {editingItem.sectionKey === "languages" && (
+                        <div className="item-fields">
+                            <label className="item-field">
+                                <span>Language</span>
+                                <input
+                                    type="text"
+                                    value={editingItemData.language || ""}
+                                    onChange={(e) => updateItemField("languages", editingItemData.id, "language", e.target.value)}
+                                />
+                            </label>
+                            <label className="item-field">
+                                <span>Fluency</span>
+                                <input
+                                    type="text"
+                                    value={editingItemData.fluency || ""}
+                                    onChange={(e) => updateItemField("languages", editingItemData.id, "fluency", e.target.value)}
+                                />
+                            </label>
+                        </div>
+                    )}
+
+                    {MOVABLE_SECTIONS.includes(editingItem.sectionKey) && (
+                        <>
+                            <ItemFields sectionKey={editingItem.sectionKey} item={editingItemData} />
+                            <label className="move-item-select">
+                                <span>Move to:</span>
+                                <select
+                                    value=""
+                                    onChange={(event) => {
+                                        if (event.target.value) {
+                                            moveItemBetweenSections(editingItem.sectionKey, event.target.value, editingItemData.id);
+                                            setEditingItem(null);
+                                        }
+                                    }}
+                                >
+                                    <option value="">Choose section...</option>
+                                    {MOVABLE_SECTIONS.filter((s) => s !== editingItem.sectionKey).map((s) => (
+                                        <option key={s} value={s}>{SECTION_LABELS[s]}</option>
+                                    ))}
+                                </select>
+                            </label>
+                        </>
+                    )}
+                </Modal>
+            )}
         </>
     );
 }

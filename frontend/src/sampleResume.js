@@ -13,7 +13,7 @@ export const SAMPLE_RESUME = {
         customFields: [{ id: "1", icon: "", text: "Portfolio: example.com", link: "https://example.com" }],
     },
     summary: {
-        title: "Summary",
+        title: "Profile",
         hidden: false,
         content:
             "<p>Product designer with 5+ years building user-centered interfaces for web and mobile products. Focused on design systems, accessibility, and close collaboration with engineering teams.</p>",

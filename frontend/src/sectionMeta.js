@@ -1,5 +1,5 @@
 export const SECTION_LABELS = {
-    summary: "Summary",
+    summary: "Profile",
     experience: "Experience",
     education: "Education",
     projects: "Projects",
@@ -70,5 +70,28 @@ export function blankItem(sectionKey) {
             return { ...base, language: "", fluency: "", level: 0 };
         default:
             return base;
+    }
+}
+
+// Compact preview shown on the collapsed item row - a primary label plus a
+// secondary detail, so an expanded section doesn't dump every field at once.
+export function itemSummary(sectionKey, item) {
+    switch (sectionKey) {
+        case "experience":
+            return { primary: item.position || "Untitled position", secondary: item.company || "" };
+        case "education":
+            return { primary: item.degree || "Untitled degree", secondary: item.school || "" };
+        case "projects":
+            return { primary: item.name || "Untitled project", secondary: item.period || "" };
+        case "volunteer":
+            return { primary: item.organization || "Untitled", secondary: item.period || "" };
+        case "certifications":
+            return { primary: item.name || "Untitled certification", secondary: item.issuer || "" };
+        case "skills":
+            return { primary: item.name || "Untitled category", secondary: (item.keywords || []).join(", ") };
+        case "languages":
+            return { primary: item.language || "Untitled language", secondary: item.fluency || "" };
+        default:
+            return { primary: "Item", secondary: "" };
     }
 }
