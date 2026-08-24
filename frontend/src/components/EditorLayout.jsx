@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import AtsPanel from "./AtsPanel.jsx";
+import BasicsPanel from "./BasicsPanel.jsx";
 import PreviewPane from "./PreviewPane.jsx";
 import SectionList from "./SectionList.jsx";
 import StylePanel from "./StylePanel.jsx";
@@ -8,6 +9,7 @@ import { exportPdf } from "../api.js";
 import { useResumeStore } from "../store/resumeStore.js";
 
 const TABS = [
+    { id: "basics", label: "Basics" },
     { id: "sections", label: "Sections" },
     { id: "style", label: "Style" },
     { id: "ats", label: "ATS Check" },
@@ -16,7 +18,7 @@ const TABS = [
 export default function EditorLayout() {
     const resume = useResumeStore((state) => state.resume);
     const setResume = useResumeStore((state) => state.setResume);
-    const [activeTab, setActiveTab] = useState("sections");
+    const [activeTab, setActiveTab] = useState("basics");
     const [exporting, setExporting] = useState(false);
 
     function handleUndo() {
@@ -84,9 +86,12 @@ export default function EditorLayout() {
                         ))}
                     </div>
 
-                    {activeTab === "sections" && <SectionList />}
-                    {activeTab === "style" && <StylePanel />}
-                    {activeTab === "ats" && <AtsPanel />}
+                    <div className="editor-tab-content">
+                        {activeTab === "basics" && <BasicsPanel />}
+                        {activeTab === "sections" && <SectionList />}
+                        {activeTab === "style" && <StylePanel />}
+                        {activeTab === "ats" && <AtsPanel />}
+                    </div>
                 </aside>
 
                 <main className="editor-preview-area">

@@ -16,6 +16,63 @@ export const useResumeStore = create(
                     },
                 })),
 
+            updateWebsiteField: (field, value) =>
+                set((state) => ({
+                    resume: {
+                        ...state.resume,
+                        basics: {
+                            ...state.resume.basics,
+                            website: { ...state.resume.basics.website, [field]: value },
+                        },
+                    },
+                })),
+
+            addCustomField: () =>
+                set((state) => ({
+                    resume: {
+                        ...state.resume,
+                        basics: {
+                            ...state.resume.basics,
+                            customFields: [
+                                ...(state.resume.basics.customFields || []),
+                                { id: crypto.randomUUID(), icon: "", text: "", link: "" },
+                            ],
+                        },
+                    },
+                })),
+
+            removeCustomField: (id) =>
+                set((state) => ({
+                    resume: {
+                        ...state.resume,
+                        basics: {
+                            ...state.resume.basics,
+                            customFields: (state.resume.basics.customFields || []).filter((f) => f.id !== id),
+                        },
+                    },
+                })),
+
+            updateCustomField: (id, field, value) =>
+                set((state) => ({
+                    resume: {
+                        ...state.resume,
+                        basics: {
+                            ...state.resume.basics,
+                            customFields: (state.resume.basics.customFields || []).map((f) =>
+                                f.id === id ? { ...f, [field]: value } : f
+                            ),
+                        },
+                    },
+                })),
+
+            updatePictureField: (field, value) =>
+                set((state) => ({
+                    resume: {
+                        ...state.resume,
+                        picture: { ...state.resume.picture, [field]: value },
+                    },
+                })),
+
             updateSummaryContent: (content) =>
                 set((state) => ({
                     resume: {

@@ -23,7 +23,14 @@ export default function PreviewPane() {
                     setHtml(result);
                     setError("");
                 })
-                .catch(() => setError("Could not reach the preview server."));
+                .catch((err) => {
+                    const isNetworkFailure = err instanceof TypeError;
+                    setError(
+                        isNetworkFailure
+                            ? "Can't reach the backend at http://127.0.0.1:8200 - is it running?"
+                            : `Preview failed: ${err.message}`
+                    );
+                });
         }, DEBOUNCE_MS);
 
         return () => clearTimeout(debounceRef.current);

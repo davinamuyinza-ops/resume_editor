@@ -1,5 +1,16 @@
 const API_BASE_URL = "http://127.0.0.1:8200";
 
+async function readErrorDetail(response) {
+    try {
+        const data = await response.json();
+        if (typeof data.detail === "string") return data.detail;
+        if (data.detail?.message) return data.detail.message;
+        return JSON.stringify(data.detail || data);
+    } catch {
+        return `Server responded with ${response.status}.`;
+    }
+}
+
 export async function renderPreview(resumeJson) {
     const response = await fetch(`${API_BASE_URL}/render-preview`, {
         method: "POST",
@@ -8,7 +19,7 @@ export async function renderPreview(resumeJson) {
     });
 
     if (!response.ok) {
-        throw new Error("Could not render preview.");
+        throw new Error(await readErrorDetail(response));
     }
 
     return response.text();
@@ -22,7 +33,7 @@ export async function exportPdf(resumeJson) {
     });
 
     if (!response.ok) {
-        throw new Error("Could not export PDF.");
+        throw new Error(await readErrorDetail(response));
     }
 
     return response.blob();
@@ -36,7 +47,7 @@ export async function checkAts(resumeJson) {
     });
 
     if (!response.ok) {
-        throw new Error("Could not run ATS check.");
+        throw new Error(await readErrorDetail(response));
     }
 
     return response.json();

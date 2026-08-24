@@ -207,6 +207,12 @@ button {
     border-bottom-color: var(--accent);
 }
 
+.editor-tab-content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
 .editor-preview-area {
     flex: 1;
     background: #dde3ee;
@@ -375,6 +381,122 @@ button {
 
 .rich-text-content .ProseMirror {
     outline: none;
+}
+
+/* --- Basics panel --- */
+
+.basics-panel {
+    padding: 18px;
+}
+
+.basics-section {
+    margin-bottom: 26px;
+}
+
+.basics-section-title {
+    font-size: 12.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+.basics-section-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.basics-section-title-row .basics-section-title {
+    margin-bottom: 0;
+}
+
+.photo-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.photo-preview {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+}
+
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-placeholder {
+    font-size: 10.5px;
+    color: var(--muted);
+    text-align: center;
+}
+
+.photo-controls {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.custom-field-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.custom-field-row .item-fields,
+.custom-field-row .item-field {
+    flex: 1;
+}
+
+.custom-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 8px;
+    align-items: end;
+}
+
+.add-link-button {
+    border: none;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.remove-link-button {
+    border: none;
+    background: #fee2e2;
+    color: #b91c1c;
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    height: fit-content;
 }
 
 /* --- Style panel --- */
