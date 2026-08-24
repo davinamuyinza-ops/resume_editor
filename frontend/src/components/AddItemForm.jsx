@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import RichTextEditor from "./RichTextEditor.jsx";
-import { ADDABLE_SECTIONS, blankItem, DESCRIPTION_SECTIONS, FIELD_LAYOUTS, SECTION_LABELS } from "../sectionMeta.js";
+import { ADDABLE_SECTIONS, blankItem, DESCRIPTION_SECTIONS, FIELD_LAYOUTS, FLUENCY_LEVELS, levelForFluency, SECTION_LABELS } from "../sectionMeta.js";
 import { useResumeStore } from "../store/resumeStore.js";
 
 export default function AddItemForm() {
@@ -27,6 +27,7 @@ export default function AddItemForm() {
         } else if (sectionKey === "languages") {
             item.language = fields.language || "";
             item.fluency = fields.fluency || "";
+            item.level = levelForFluency(fields.fluency || "");
         } else {
             for (const layoutField of FIELD_LAYOUTS[sectionKey] || []) {
                 item[layoutField.key] = fields[layoutField.key] || "";
@@ -73,7 +74,12 @@ export default function AddItemForm() {
                         </label>
                         <label className="item-field">
                             <span>Fluency</span>
-                            <input type="text" value={fields.fluency || ""} onChange={(e) => handleFieldChange("fluency", e.target.value)} />
+                            <select value={fields.fluency || ""} onChange={(e) => handleFieldChange("fluency", e.target.value)}>
+                                <option value="">Select fluency...</option>
+                                {FLUENCY_LEVELS.map((f) => (
+                                    <option key={f.label} value={f.label}>{f.label}</option>
+                                ))}
+                            </select>
                         </label>
                     </>
                 )}

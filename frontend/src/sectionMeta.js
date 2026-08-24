@@ -50,6 +50,21 @@ export const FIELD_LAYOUTS = {
 
 export const DESCRIPTION_SECTIONS = new Set(["experience", "projects", "volunteer"]);
 
+// Fluency label <-> dot-rating level, kept together so picking a label
+// always keeps the resume's rendered dots in sync with it.
+export const FLUENCY_LEVELS = [
+    { label: "Native", level: 5 },
+    { label: "Fluent", level: 4 },
+    { label: "Advanced", level: 3 },
+    { label: "Intermediate", level: 2 },
+    { label: "Basic", level: 1 },
+];
+
+export function levelForFluency(label) {
+    const match = FLUENCY_LEVELS.find((f) => f.label === label);
+    return match ? match.level : 0;
+}
+
 export function blankItem(sectionKey) {
     const base = { id: crypto.randomUUID(), hidden: false };
 

@@ -7,7 +7,7 @@ import AddItemForm from "./AddItemForm.jsx";
 import ItemFields from "./ItemFields.jsx";
 import Modal from "./Modal.jsx";
 import RichTextEditor from "./RichTextEditor.jsx";
-import { DEFAULT_ORDER, itemSummary, MOVABLE_SECTIONS, SECTION_LABELS } from "../sectionMeta.js";
+import { DEFAULT_ORDER, FLUENCY_LEVELS, itemSummary, levelForFluency, MOVABLE_SECTIONS, SECTION_LABELS } from "../sectionMeta.js";
 import { useResumeStore } from "../store/resumeStore.js";
 
 function SortableSection({ sectionKey, expanded, onToggleExpand, children }) {
@@ -209,11 +209,18 @@ export default function SectionList() {
                             </label>
                             <label className="item-field">
                                 <span>Fluency</span>
-                                <input
-                                    type="text"
+                                <select
                                     value={editingItemData.fluency || ""}
-                                    onChange={(e) => updateItemField("languages", editingItemData.id, "fluency", e.target.value)}
-                                />
+                                    onChange={(e) => {
+                                        updateItemField("languages", editingItemData.id, "fluency", e.target.value);
+                                        updateItemField("languages", editingItemData.id, "level", levelForFluency(e.target.value));
+                                    }}
+                                >
+                                    <option value="">Select fluency...</option>
+                                    {FLUENCY_LEVELS.map((f) => (
+                                        <option key={f.label} value={f.label}>{f.label}</option>
+                                    ))}
+                                </select>
                             </label>
                         </div>
                     )}
