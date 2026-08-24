@@ -162,6 +162,7 @@
                 <div class="item">
                     <div class="item-row"><span class="left">{{ item.school }}</span><span class="right">{{ item.period }}</span></div>
                     <div class="item-row"><span class="item-sub">{{ item.degree }}{% if item.area %}, {{ item.area }}{% endif %}</span>{% if item.grade %}<span class="right">{{ item.grade }}</span>{% endif %}</div>
+                    {% if item.description %}<div class="item-desc">{{ item.description | safe }}</div>{% endif %}
                 </div>
                 {% endfor %}
             </section>

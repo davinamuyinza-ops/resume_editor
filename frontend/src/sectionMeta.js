@@ -48,7 +48,7 @@ export const FIELD_LAYOUTS = {
     ],
 };
 
-export const DESCRIPTION_SECTIONS = new Set(["experience", "projects", "volunteer"]);
+export const DESCRIPTION_SECTIONS = new Set(["experience", "education", "projects", "volunteer"]);
 
 // Fluency label <-> dot-rating level, kept together so picking a label
 // always keeps the resume's rendered dots in sync with it.
