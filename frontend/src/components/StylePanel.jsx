@@ -1,3 +1,4 @@
+import Slider from "./Slider.jsx";
 import { useResumeStore } from "../store/resumeStore.js";
 
 const TEMPLATES = [
@@ -13,18 +14,21 @@ const FONTS = [
     { value: "Roboto, Arial, sans-serif", label: "Roboto" },
 ];
 
-const FONT_SIZES = ["8.5pt", "9pt", "9.5pt", "10pt", "10.5pt", "11pt"];
-const LINE_HEIGHTS = ["1.3", "1.45", "1.6", "1.75"];
-const MARGINS = [
-    { value: "10mm 12mm", label: "Compact" },
-    { value: "14mm 16mm", label: "Normal" },
-    { value: "20mm 22mm", label: "Spacious" },
-];
 const PAGE_FORMATS = [
     { value: "a4", label: "A4" },
     { value: "letter", label: "Letter" },
     { value: "free", label: "Free-Form" },
 ];
+
+function parseFontSize(value) {
+    const n = parseFloat(value);
+    return Number.isFinite(n) ? n : 9.5;
+}
+
+function parseMargin(value) {
+    const match = /^(\d+(?:\.\d+)?)mm/.exec(value || "");
+    return match ? parseFloat(match[1]) : 14;
+}
 
 export default function StylePanel() {
     const resume = useResumeStore((state) => state.resume);
@@ -47,19 +51,24 @@ export default function StylePanel() {
                 </select>
             </label>
 
-            <label className="style-field">
-                <span>Font size</span>
-                <select value={metadata.fontSize} onChange={(e) => updateMetadataField("fontSize", e.target.value)}>
-                    {FONT_SIZES.map((size) => <option key={size} value={size}>{size}</option>)}
-                </select>
-            </label>
+            <Slider
+                label="Font size"
+                value={parseFontSize(metadata.fontSize)}
+                min={8}
+                max={12}
+                step={0.5}
+                unit="pt"
+                onChange={(value) => updateMetadataField("fontSize", `${value}pt`)}
+            />
 
-            <label className="style-field">
-                <span>Line height</span>
-                <select value={metadata.lineHeight} onChange={(e) => updateMetadataField("lineHeight", e.target.value)}>
-                    {LINE_HEIGHTS.map((lh) => <option key={lh} value={lh}>{lh}</option>)}
-                </select>
-            </label>
+            <Slider
+                label="Line height"
+                value={parseFloat(metadata.lineHeight) || 1.45}
+                min={1.2}
+                max={2}
+                step={0.05}
+                onChange={(value) => updateMetadataField("lineHeight", String(value))}
+            />
 
             <label className="style-field">
                 <span>Accent color</span>
@@ -70,12 +79,15 @@ export default function StylePanel() {
                 />
             </label>
 
-            <label className="style-field">
-                <span>Margins</span>
-                <select value={metadata.margin} onChange={(e) => updateMetadataField("margin", e.target.value)}>
-                    {MARGINS.map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
-                </select>
-            </label>
+            <Slider
+                label="Margins"
+                value={parseMargin(metadata.margin)}
+                min={8}
+                max={28}
+                step={1}
+                unit="mm"
+                onChange={(value) => updateMetadataField("margin", `${value}mm ${value + 2}mm`)}
+            />
 
             <label className="style-field">
                 <span>Page format</span>

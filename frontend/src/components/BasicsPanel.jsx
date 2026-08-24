@@ -1,3 +1,4 @@
+import Slider from "./Slider.jsx";
 import { useResumeStore } from "../store/resumeStore.js";
 
 export default function BasicsPanel() {
@@ -39,17 +40,15 @@ export default function BasicsPanel() {
                                 onChange={(e) => updatePictureField("url", e.target.value)}
                             />
                         </label>
-                        <label className="item-field item-field-full">
-                            <span>Size ({picture.size || 70}px)</span>
-                            <input
-                                type="range"
-                                min="40"
-                                max="160"
-                                step="5"
-                                value={picture.size || 70}
-                                onChange={(e) => updatePictureField("size", Number(e.target.value))}
-                            />
-                        </label>
+                        <Slider
+                            label="Size"
+                            value={picture.size || 70}
+                            min={40}
+                            max={160}
+                            step={5}
+                            unit="px"
+                            onChange={(value) => updatePictureField("size", value)}
+                        />
                         <label className="checkbox-field">
                             <input
                                 type="checkbox"
