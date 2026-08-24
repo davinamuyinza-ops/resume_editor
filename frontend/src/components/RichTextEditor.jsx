@@ -1,10 +1,16 @@
+import Link from "@tiptap/extension-link";
+import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useEffect } from "react";
 
 export default function RichTextEditor({ value, onChange }) {
     const editor = useEditor({
-        extensions: [StarterKit],
+        extensions: [
+            StarterKit,
+            Underline,
+            Link.configure({ openOnClick: false, autolink: true }),
+        ],
         content: value || "",
         onUpdate: ({ editor: editorInstance }) => {
             onChange(editorInstance.getHTML());
@@ -22,6 +28,20 @@ export default function RichTextEditor({ value, onChange }) {
         return null;
     }
 
+    function setLink() {
+        const previousUrl = editor.getAttributes("link").href;
+        const url = window.prompt("Link URL", previousUrl || "https://");
+
+        if (url === null) return;
+
+        if (url === "") {
+            editor.chain().focus().extendMarkRange("link").unsetLink().run();
+            return;
+        }
+
+        editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+    }
+
     return (
         <div className="rich-text-editor">
             <div className="rich-text-toolbar">
@@ -29,22 +49,59 @@ export default function RichTextEditor({ value, onChange }) {
                     type="button"
                     className={editor.isActive("bold") ? "active" : ""}
                     onClick={() => editor.chain().focus().toggleBold().run()}
+                    title="Bold"
                 >
-                    B
+                    <strong>B</strong>
                 </button>
                 <button
                     type="button"
                     className={editor.isActive("italic") ? "active" : ""}
                     onClick={() => editor.chain().focus().toggleItalic().run()}
+                    title="Italic"
                 >
-                    I
+                    <em>I</em>
                 </button>
+                <button
+                    type="button"
+                    className={editor.isActive("underline") ? "active" : ""}
+                    onClick={() => editor.chain().focus().toggleUnderline().run()}
+                    title="Underline"
+                >
+                    <span style={{ textDecoration: "underline" }}>U</span>
+                </button>
+                <button
+                    type="button"
+                    className={editor.isActive("strike") ? "active" : ""}
+                    onClick={() => editor.chain().focus().toggleStrike().run()}
+                    title="Strikethrough"
+                >
+                    <span style={{ textDecoration: "line-through" }}>S</span>
+                </button>
+                <span className="toolbar-divider" />
                 <button
                     type="button"
                     className={editor.isActive("bulletList") ? "active" : ""}
                     onClick={() => editor.chain().focus().toggleBulletList().run()}
+                    title="Bullet list"
                 >
-                    List
+                    ☰ List
+                </button>
+                <button
+                    type="button"
+                    className={editor.isActive("orderedList") ? "active" : ""}
+                    onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                    title="Numbered list"
+                >
+                    1. List
+                </button>
+                <span className="toolbar-divider" />
+                <button
+                    type="button"
+                    className={editor.isActive("link") ? "active" : ""}
+                    onClick={setLink}
+                    title="Add link"
+                >
+                    🔗 Link
                 </button>
             </div>
             <EditorContent editor={editor} className="rich-text-content" />

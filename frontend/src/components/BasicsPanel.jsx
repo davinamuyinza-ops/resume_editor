@@ -81,8 +81,13 @@ export default function BasicsPanel() {
                         <input type="text" value={basics.phone || ""} onChange={(e) => updateBasicsField("phone", e.target.value)} />
                     </label>
                     <label className="item-field item-field-full">
-                        <span>Location</span>
-                        <input type="text" value={basics.location || ""} onChange={(e) => updateBasicsField("location", e.target.value)} />
+                        <span>Address</span>
+                        <input
+                            type="text"
+                            value={basics.location || ""}
+                            placeholder="Street, city, postal code, country"
+                            onChange={(e) => updateBasicsField("location", e.target.value)}
+                        />
                     </label>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 import { closestCenter, DndContext } from "@dnd-kit/core";
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import AddItemForm from "./AddItemForm.jsx";
 import ItemFields from "./ItemFields.jsx";
@@ -40,51 +40,77 @@ function SortableSection({ sectionKey, expanded, onToggleExpand, children }) {
     );
 }
 
-function ItemToolbar({ sectionKey, item, items, index }) {
-    const reorderItems = useResumeStore((state) => state.reorderItems);
-    const deleteItem = useResumeStore((state) => state.deleteItem);
+function ItemMenu({ sectionKey, item }) {
+    const [open, setOpen] = useState(false);
+    const menuRef = useRef(null);
     const toggleItemHidden = useResumeStore((state) => state.toggleItemHidden);
+    const deleteItem = useResumeStore((state) => state.deleteItem);
 
-    function moveUp() {
-        if (index === 0) return;
-        const newItems = [...items];
-        [newItems[index - 1], newItems[index]] = [newItems[index], newItems[index - 1]];
-        reorderItems(sectionKey, newItems);
-    }
-
-    function moveDown() {
-        if (index === items.length - 1) return;
-        const newItems = [...items];
-        [newItems[index + 1], newItems[index]] = [newItems[index], newItems[index + 1]];
-        reorderItems(sectionKey, newItems);
-    }
+    useEffect(() => {
+        if (!open) return;
+        function handleClickOutside(event) {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [open]);
 
     return (
-        <div className="item-toolbar">
-            <button onClick={moveUp} disabled={index === 0} title="Move up">↑</button>
-            <button onClick={moveDown} disabled={index === items.length - 1} title="Move down">↓</button>
-            <button
-                onClick={() => toggleItemHidden(sectionKey, item.id)}
-                className={`visibility-toggle ${item.hidden ? "hidden-state" : ""}`}
-            >
-                {item.hidden ? "Hidden" : "Visible"}
-            </button>
-            <button onClick={() => deleteItem(sectionKey, item.id)} className="delete-item-button">Delete</button>
+        <div className="item-menu-wrapper" ref={menuRef}>
+            <button className="item-menu-trigger" onClick={() => setOpen((o) => !o)} aria-label="More options">⋮</button>
+            {open && (
+                <div className="item-menu-dropdown">
+                    <button onClick={() => { toggleItemHidden(sectionKey, item.id); setOpen(false); }}>
+                        {item.hidden ? "Show" : "Hide"}
+                    </button>
+                    <button className="delete-option" onClick={() => { deleteItem(sectionKey, item.id); setOpen(false); }}>
+                        Delete
+                    </button>
+                </div>
+            )}
         </div>
     );
 }
 
-function ItemRow({ sectionKey, item, index, items, onEdit }) {
+function SortableItemRow({ sectionKey, item, onEdit }) {
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: item.id });
+    const style = { transform: CSS.Transform.toString(transform), transition };
     const summary = itemSummary(sectionKey, item);
 
     return (
-        <div className="item-row-compact">
+        <div ref={setNodeRef} style={style} className={`item-row-compact ${item.hidden ? "hidden-state" : ""}`}>
+            <button className="drag-handle" {...attributes} {...listeners} aria-label="Drag to reorder">⠿</button>
             <button className="item-row-summary" onClick={() => onEdit({ sectionKey, itemId: item.id })}>
                 <span className="item-row-primary">{summary.primary}</span>
                 {summary.secondary && <span className="item-row-secondary">{summary.secondary}</span>}
             </button>
-            <ItemToolbar sectionKey={sectionKey} item={item} items={items} index={index} />
+            <ItemMenu sectionKey={sectionKey} item={item} />
         </div>
+    );
+}
+
+function SortableItemsList({ sectionKey, items, onEdit }) {
+    const reorderItems = useResumeStore((state) => state.reorderItems);
+
+    function handleDragEnd(event) {
+        const { active, over } = event;
+        if (!over || active.id === over.id) return;
+
+        const oldIndex = items.findIndex((i) => i.id === active.id);
+        const newIndex = items.findIndex((i) => i.id === over.id);
+        reorderItems(sectionKey, arrayMove(items, oldIndex, newIndex));
+    }
+
+    return (
+        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <SortableContext items={items.map((i) => i.id)} strategy={verticalListSortingStrategy}>
+                {items.map((item) => (
+                    <SortableItemRow key={item.id} sectionKey={sectionKey} item={item} onEdit={onEdit} />
+                ))}
+            </SortableContext>
+        </DndContext>
     );
 }
 
@@ -99,7 +125,7 @@ export default function SectionList() {
 
     const order = resume.metadata?.sectionOrder || DEFAULT_ORDER;
 
-    function handleDragEnd(event) {
+    function handleSectionDragEnd(event) {
         const { active, over } = event;
         if (!over || active.id === over.id) return;
 
@@ -116,7 +142,7 @@ export default function SectionList() {
         <>
             <AddItemForm />
 
-            <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <DndContext collisionDetection={closestCenter} onDragEnd={handleSectionDragEnd}>
                 <SortableContext items={order} strategy={verticalListSortingStrategy}>
                     {order.map((key) => (
                         <SortableSection
@@ -129,17 +155,13 @@ export default function SectionList() {
                                 <RichTextEditor value={resume.summary?.content} onChange={updateSummaryContent} />
                             )}
 
-                            {key !== "summary" &&
-                                resume.sections[key]?.items?.map((item, index) => (
-                                    <ItemRow
-                                        key={item.id}
-                                        sectionKey={key}
-                                        item={item}
-                                        index={index}
-                                        items={resume.sections[key].items}
-                                        onEdit={setEditingItem}
-                                    />
-                                ))}
+                            {key !== "summary" && resume.sections[key]?.items?.length > 0 && (
+                                <SortableItemsList
+                                    sectionKey={key}
+                                    items={resume.sections[key].items}
+                                    onEdit={setEditingItem}
+                                />
+                            )}
                         </SortableSection>
                     ))}
                 </SortableContext>
