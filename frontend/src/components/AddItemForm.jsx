@@ -3,10 +3,12 @@ import { useState } from "react";
 import RichTextEditor from "./RichTextEditor.jsx";
 import { ADDABLE_SECTIONS, blankItem, DESCRIPTION_SECTIONS, FIELD_LAYOUTS, FLUENCY_LEVELS, getSectionTitle, levelForFluency } from "../sectionMeta.js";
 import { useResumeStore } from "../store/resumeStore.js";
+import { useTranslation } from "../i18n.js";
 
 export default function AddItemForm() {
     const resume = useResumeStore((state) => state.resume);
     const addItem = useResumeStore((state) => state.addItem);
+    const { t } = useTranslation();
     const [sectionKey, setSectionKey] = useState("experience");
     const [fields, setFields] = useState({});
 
@@ -45,7 +47,7 @@ export default function AddItemForm() {
     return (
         <div className="add-item-form">
             <div className="add-item-header">
-                <span className="add-item-title">Add new item</span>
+                <span className="add-item-title">{t("sections.addNewItem")}</span>
                 <select value={sectionKey} onChange={(e) => handleSectionChange(e.target.value)}>
                     {ADDABLE_SECTIONS.map((key) => (
                         <option key={key} value={key}>{getSectionTitle(resume, key)}</option>
@@ -57,11 +59,11 @@ export default function AddItemForm() {
                 {sectionKey === "skills" && (
                     <>
                         <label className="item-field">
-                            <span>Category name</span>
+                            <span>{t("sections.categoryName")}</span>
                             <input type="text" value={fields.name || ""} onChange={(e) => handleFieldChange("name", e.target.value)} />
                         </label>
                         <label className="item-field item-field-full">
-                            <span>Keywords (comma-separated)</span>
+                            <span>{t("sections.keywords")}</span>
                             <input type="text" value={fields.keywords || ""} onChange={(e) => handleFieldChange("keywords", e.target.value)} />
                         </label>
                     </>
@@ -70,13 +72,13 @@ export default function AddItemForm() {
                 {sectionKey === "languages" && (
                     <>
                         <label className="item-field">
-                            <span>Language</span>
+                            <span>{t("sections.language")}</span>
                             <input type="text" value={fields.language || ""} onChange={(e) => handleFieldChange("language", e.target.value)} />
                         </label>
                         <label className="item-field">
-                            <span>Fluency</span>
+                            <span>{t("sections.fluency")}</span>
                             <select value={fields.fluency || ""} onChange={(e) => handleFieldChange("fluency", e.target.value)}>
-                                <option value="">Select fluency...</option>
+                                <option value="">{t("sections.selectFluency")}</option>
                                 {FLUENCY_LEVELS.map((f) => (
                                     <option key={f.label} value={f.label}>{f.label}</option>
                                 ))}
@@ -87,7 +89,7 @@ export default function AddItemForm() {
 
                 {FIELD_LAYOUTS[sectionKey]?.map((field) => (
                     <label key={field.key} className="item-field">
-                        <span>{field.label}</span>
+                        <span>{t(field.labelKey)}</span>
                         <input
                             type="text"
                             value={fields[field.key] || ""}
@@ -98,7 +100,7 @@ export default function AddItemForm() {
 
                 {DESCRIPTION_SECTIONS.has(sectionKey) && (
                     <label className="item-field item-field-full">
-                        <span>Description</span>
+                        <span>{t("sections.description")}</span>
                         <RichTextEditor
                             value={fields.description || ""}
                             onChange={(html) => handleFieldChange("description", html)}
@@ -108,7 +110,7 @@ export default function AddItemForm() {
             </div>
 
             <button className="primary-action add-item-button" onClick={handleAdd}>
-                + Add to {getSectionTitle(resume, sectionKey)}
+                {t("sections.addTo", { title: getSectionTitle(resume, sectionKey) })}
             </button>
         </div>
     );

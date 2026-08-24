@@ -9,11 +9,13 @@ import Modal from "./Modal.jsx";
 import RichTextEditor from "./RichTextEditor.jsx";
 import { DEFAULT_ORDER, FLUENCY_LEVELS, getSectionTitle, itemSummary, levelForFluency, MOVABLE_SECTIONS } from "../sectionMeta.js";
 import { useResumeStore } from "../store/resumeStore.js";
+import { useTranslation } from "../i18n.js";
 
 function SectionMenu({ sectionKey, hidden, onRename }) {
     const [open, setOpen] = useState(false);
     const menuRef = useRef(null);
     const toggleSectionHidden = useResumeStore((state) => state.toggleSectionHidden);
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (!open) return;
@@ -28,15 +30,15 @@ function SectionMenu({ sectionKey, hidden, onRename }) {
 
     return (
         <div className="item-menu-wrapper" ref={menuRef}>
-            <button className="item-menu-trigger" onClick={() => setOpen((o) => !o)} aria-label="More options">⋮</button>
+            <button className="item-menu-trigger" onClick={() => setOpen((o) => !o)} aria-label={t("sections.moreOptions")}>⋮</button>
             {open && (
                 <div className="item-menu-dropdown">
                     {sectionKey !== "summary" && (
                         <button onClick={() => { toggleSectionHidden(sectionKey); setOpen(false); }}>
-                            {hidden ? "Show" : "Hide"}
+                            {hidden ? t("sections.show") : t("sections.hide")}
                         </button>
                     )}
-                    <button onClick={() => { onRename(); setOpen(false); }}>Rename</button>
+                    <button onClick={() => { onRename(); setOpen(false); }}>{t("sections.rename")}</button>
                 </div>
             )}
         </div>
@@ -47,6 +49,7 @@ function SortableSection({ sectionKey, expanded, onToggleExpand, children }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: sectionKey });
     const resume = useResumeStore((state) => state.resume);
     const updateSectionTitle = useResumeStore((state) => state.updateSectionTitle);
+    const { t } = useTranslation();
     const [isRenaming, setIsRenaming] = useState(false);
     const [draftTitle, setDraftTitle] = useState("");
 
@@ -71,7 +74,7 @@ function SortableSection({ sectionKey, expanded, onToggleExpand, children }) {
     return (
         <div ref={setNodeRef} style={style} className="section-row">
             <div className="section-row-header">
-                <button className="drag-handle" {...attributes} {...listeners} aria-label="Drag to reorder">⠿</button>
+                <button className="drag-handle" {...attributes} {...listeners} aria-label={t("sections.dragToReorder")}>⠿</button>
                 {isRenaming ? (
                     <input
                         className="section-rename-input"
@@ -101,6 +104,7 @@ function ItemMenu({ sectionKey, item }) {
     const menuRef = useRef(null);
     const toggleItemHidden = useResumeStore((state) => state.toggleItemHidden);
     const deleteItem = useResumeStore((state) => state.deleteItem);
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (!open) return;
@@ -115,14 +119,14 @@ function ItemMenu({ sectionKey, item }) {
 
     return (
         <div className="item-menu-wrapper" ref={menuRef}>
-            <button className="item-menu-trigger" onClick={() => setOpen((o) => !o)} aria-label="More options">⋮</button>
+            <button className="item-menu-trigger" onClick={() => setOpen((o) => !o)} aria-label={t("sections.moreOptions")}>⋮</button>
             {open && (
                 <div className="item-menu-dropdown">
                     <button onClick={() => { toggleItemHidden(sectionKey, item.id); setOpen(false); }}>
-                        {item.hidden ? "Show" : "Hide"}
+                        {item.hidden ? t("sections.show") : t("sections.hide")}
                     </button>
                     <button className="delete-option" onClick={() => { deleteItem(sectionKey, item.id); setOpen(false); }}>
-                        Delete
+                        {t("sections.delete")}
                     </button>
                 </div>
             )}
@@ -132,12 +136,13 @@ function ItemMenu({ sectionKey, item }) {
 
 function SortableItemRow({ sectionKey, item, onEdit }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: item.id });
+    const { t } = useTranslation();
     const style = { transform: CSS.Transform.toString(transform), transition };
-    const summary = itemSummary(sectionKey, item);
+    const summary = itemSummary(t, sectionKey, item);
 
     return (
         <div ref={setNodeRef} style={style} className={`item-row-compact ${item.hidden ? "hidden-state" : ""}`}>
-            <button className="drag-handle" {...attributes} {...listeners} aria-label="Drag to reorder">⠿</button>
+            <button className="drag-handle" {...attributes} {...listeners} aria-label={t("sections.dragToReorder")}>⠿</button>
             <button className="item-row-summary" onClick={() => onEdit({ sectionKey, itemId: item.id })}>
                 <span className="item-row-primary">{summary.primary}</span>
                 {summary.secondary && <span className="item-row-secondary">{summary.secondary}</span>}
@@ -176,6 +181,7 @@ export default function SectionList() {
     const updateSummaryContent = useResumeStore((state) => state.updateSummaryContent);
     const updateItemField = useResumeStore((state) => state.updateItemField);
     const moveItemBetweenSections = useResumeStore((state) => state.moveItemBetweenSections);
+    const { t } = useTranslation();
     const [expandedKey, setExpandedKey] = useState("experience");
     const [editingItem, setEditingItem] = useState(null);
 
@@ -228,7 +234,7 @@ export default function SectionList() {
                     {editingItem.sectionKey === "skills" && (
                         <div className="item-fields">
                             <label className="item-field">
-                                <span>Category name</span>
+                                <span>{t("sections.categoryName")}</span>
                                 <input
                                     type="text"
                                     value={editingItemData.name || ""}
@@ -236,7 +242,7 @@ export default function SectionList() {
                                 />
                             </label>
                             <label className="item-field item-field-full">
-                                <span>Keywords (comma-separated)</span>
+                                <span>{t("sections.keywords")}</span>
                                 <input
                                     type="text"
                                     value={(editingItemData.keywords || []).join(", ")}
@@ -256,7 +262,7 @@ export default function SectionList() {
                     {editingItem.sectionKey === "languages" && (
                         <div className="item-fields">
                             <label className="item-field">
-                                <span>Language</span>
+                                <span>{t("sections.language")}</span>
                                 <input
                                     type="text"
                                     value={editingItemData.language || ""}
@@ -264,7 +270,7 @@ export default function SectionList() {
                                 />
                             </label>
                             <label className="item-field">
-                                <span>Fluency</span>
+                                <span>{t("sections.fluency")}</span>
                                 <select
                                     value={editingItemData.fluency || ""}
                                     onChange={(e) => {
@@ -272,7 +278,7 @@ export default function SectionList() {
                                         updateItemField("languages", editingItemData.id, "level", levelForFluency(e.target.value));
                                     }}
                                 >
-                                    <option value="">Select fluency...</option>
+                                    <option value="">{t("sections.selectFluency")}</option>
                                     {FLUENCY_LEVELS.map((f) => (
                                         <option key={f.label} value={f.label}>{f.label}</option>
                                     ))}
@@ -285,7 +291,7 @@ export default function SectionList() {
                         <>
                             <ItemFields sectionKey={editingItem.sectionKey} item={editingItemData} />
                             <label className="move-item-select">
-                                <span>Move to:</span>
+                                <span>{t("sections.moveTo")}</span>
                                 <select
                                     value=""
                                     onChange={(event) => {
@@ -295,7 +301,7 @@ export default function SectionList() {
                                         }
                                     }}
                                 >
-                                    <option value="">Choose section...</option>
+                                    <option value="">{t("sections.chooseSection")}</option>
                                     {MOVABLE_SECTIONS.filter((s) => s !== editingItem.sectionKey).map((s) => (
                                         <option key={s} value={s}>{getSectionTitle(resume, s)}</option>
                                     ))}

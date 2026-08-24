@@ -170,6 +170,17 @@ button {
     width: auto;
 }
 
+.language-select {
+    border: 1px solid var(--border);
+    background: white;
+    border-radius: 8px;
+    padding: 9px 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+}
+
 .editor-body {
     flex: 1;
     display: flex;
@@ -1030,4 +1041,11 @@ input[type="range"]::-moz-range-track {
     line-height: 1.6;
     color: var(--ink);
     white-space: pre-wrap;
+}
+
+.ats-report-note {
+    margin-top: 10px;
+    font-size: 12px;
+    font-style: italic;
+    color: var(--muted);
 }

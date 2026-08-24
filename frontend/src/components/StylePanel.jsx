@@ -1,9 +1,10 @@
 import Slider from "./Slider.jsx";
 import { useResumeStore } from "../store/resumeStore.js";
+import { useTranslation } from "../i18n.js";
 
 const TEMPLATES = [
-    { value: "classic", label: "Classic (single column)" },
-    { value: "sidebar", label: "Sidebar (two column)" },
+    { value: "classic", labelKey: "style.templateClassic" },
+    { value: "sidebar", labelKey: "style.templateSidebar" },
 ];
 
 const FONTS = [
@@ -23,18 +24,18 @@ const FONTS = [
 ];
 
 const FONT_WEIGHTS = [
-    { value: 300, label: "Light" },
-    { value: 400, label: "Regular" },
-    { value: 500, label: "Medium" },
-    { value: 600, label: "Semibold" },
-    { value: 700, label: "Bold" },
-    { value: 800, label: "Extra Bold" },
+    { value: 300, labelKey: "weight.light" },
+    { value: 400, labelKey: "weight.regular" },
+    { value: 500, labelKey: "weight.medium" },
+    { value: 600, labelKey: "weight.semibold" },
+    { value: 700, labelKey: "weight.bold" },
+    { value: 800, labelKey: "weight.extraBold" },
 ];
 
 const PAGE_FORMATS = [
-    { value: "a4", label: "A4" },
-    { value: "letter", label: "Letter" },
-    { value: "free", label: "Free-Form" },
+    { value: "a4", labelKey: "style.pageFormatA4" },
+    { value: "letter", labelKey: "style.pageFormatLetter" },
+    { value: "free", labelKey: "style.pageFormatFree" },
 ];
 
 function parseFontSize(value, fallback) {
@@ -50,21 +51,22 @@ function parseMargin(value) {
 export default function StylePanel() {
     const resume = useResumeStore((state) => state.resume);
     const updateMetadataField = useResumeStore((state) => state.updateMetadataField);
+    const { t } = useTranslation();
     const metadata = resume.metadata || {};
 
     return (
         <div className="style-panel">
-            <div className="basics-section-title">Layout</div>
+            <div className="basics-section-title">{t("style.layout")}</div>
 
             <label className="style-field">
-                <span>Template</span>
+                <span>{t("style.template")}</span>
                 <select value={metadata.template || "classic"} onChange={(e) => updateMetadataField("template", e.target.value)}>
-                    {TEMPLATES.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
+                    {TEMPLATES.map((tpl) => <option key={tpl.value} value={tpl.value}>{t(tpl.labelKey)}</option>)}
                 </select>
             </label>
 
             <label className="style-field">
-                <span>Accent color</span>
+                <span>{t("style.accentColor")}</span>
                 <input
                     type="color"
                     value={metadata.primaryColor || "#0f3381"}
@@ -73,7 +75,7 @@ export default function StylePanel() {
             </label>
 
             <Slider
-                label="Margin (page edge to content)"
+                label={t("style.margin")}
                 value={parseMargin(metadata.margin)}
                 min={2}
                 max={28}
@@ -83,7 +85,7 @@ export default function StylePanel() {
             />
 
             <Slider
-                label="Padding (spacing between sections)"
+                label={t("style.padding")}
                 value={metadata.sectionSpacing || 20}
                 min={5}
                 max={40}
@@ -93,16 +95,16 @@ export default function StylePanel() {
             />
 
             <label className="style-field">
-                <span>Page format</span>
+                <span>{t("style.pageFormat")}</span>
                 <select value={metadata.pageFormat} onChange={(e) => updateMetadataField("pageFormat", e.target.value)}>
-                    {PAGE_FORMATS.map((p) => <option key={p.value} value={p.value}>{p.label}</option>)}
+                    {PAGE_FORMATS.map((p) => <option key={p.value} value={p.value}>{t(p.labelKey)}</option>)}
                 </select>
             </label>
 
-            <div className="basics-section-title style-section-spacer">Headings</div>
+            <div className="basics-section-title style-section-spacer">{t("style.headings")}</div>
 
             <label className="style-field">
-                <span>Heading font</span>
+                <span>{t("style.headingFont")}</span>
                 <select
                     value={metadata.headingFontFamily || metadata.fontFamily}
                     onChange={(e) => updateMetadataField("headingFontFamily", e.target.value)}
@@ -112,7 +114,7 @@ export default function StylePanel() {
             </label>
 
             <Slider
-                label="Heading font size"
+                label={t("style.headingFontSize")}
                 value={parseFontSize(metadata.headingFontSize, 10)}
                 min={7}
                 max={16}
@@ -122,7 +124,7 @@ export default function StylePanel() {
             />
 
             <Slider
-                label="Heading line height"
+                label={t("style.headingLineHeight")}
                 value={parseFloat(metadata.headingLineHeight) || 1.3}
                 min={1}
                 max={2}
@@ -131,26 +133,26 @@ export default function StylePanel() {
             />
 
             <label className="style-field">
-                <span>Heading boldness</span>
+                <span>{t("style.headingBoldness")}</span>
                 <select
                     value={metadata.headingFontWeight || 700}
                     onChange={(e) => updateMetadataField("headingFontWeight", Number(e.target.value))}
                 >
-                    {FONT_WEIGHTS.map((w) => <option key={w.value} value={w.value}>{w.label}</option>)}
+                    {FONT_WEIGHTS.map((w) => <option key={w.value} value={w.value}>{t(w.labelKey)}</option>)}
                 </select>
             </label>
 
-            <div className="basics-section-title style-section-spacer">Body text</div>
+            <div className="basics-section-title style-section-spacer">{t("style.bodyText")}</div>
 
             <label className="style-field">
-                <span>Body font</span>
+                <span>{t("style.bodyFont")}</span>
                 <select value={metadata.fontFamily} onChange={(e) => updateMetadataField("fontFamily", e.target.value)}>
                     {FONTS.map((f) => <option key={f.value} value={f.value}>{f.label}</option>)}
                 </select>
             </label>
 
             <Slider
-                label="Body font size"
+                label={t("style.bodyFontSize")}
                 value={parseFontSize(metadata.fontSize, 9.5)}
                 min={8}
                 max={12}
@@ -160,7 +162,7 @@ export default function StylePanel() {
             />
 
             <Slider
-                label="Body line height"
+                label={t("style.bodyLineHeight")}
                 value={parseFloat(metadata.lineHeight) || 1.45}
                 min={1.2}
                 max={2}
@@ -169,36 +171,36 @@ export default function StylePanel() {
             />
 
             <label className="style-field">
-                <span>Body boldness</span>
+                <span>{t("style.bodyBoldness")}</span>
                 <select
                     value={metadata.bodyFontWeight || 400}
                     onChange={(e) => updateMetadataField("bodyFontWeight", Number(e.target.value))}
                 >
-                    {FONT_WEIGHTS.map((w) => <option key={w.value} value={w.value}>{w.label}</option>)}
+                    {FONT_WEIGHTS.map((w) => <option key={w.value} value={w.value}>{t(w.labelKey)}</option>)}
                 </select>
             </label>
 
-            <div className="basics-section-title style-section-spacer">Skills &amp; languages</div>
+            <div className="basics-section-title style-section-spacer">{t("style.skillsAndLanguages")}</div>
 
             <label className="style-field">
-                <span>Skills layout</span>
+                <span>{t("style.skillsLayout")}</span>
                 <select
                     value={metadata.skillsLayout || "stacked"}
                     onChange={(e) => updateMetadataField("skillsLayout", e.target.value)}
                 >
-                    <option value="stacked">Stacked (one category per line)</option>
-                    <option value="inline">Inline (wrapped)</option>
+                    <option value="stacked">{t("style.stackedSkills")}</option>
+                    <option value="inline">{t("style.inline")}</option>
                 </select>
             </label>
 
             <label className="style-field">
-                <span>Languages layout</span>
+                <span>{t("style.languagesLayout")}</span>
                 <select
                     value={metadata.languagesLayout || "stacked"}
                     onChange={(e) => updateMetadataField("languagesLayout", e.target.value)}
                 >
-                    <option value="stacked">Stacked (one per line)</option>
-                    <option value="inline">Inline (wrapped)</option>
+                    <option value="stacked">{t("style.stackedLanguages")}</option>
+                    <option value="inline">{t("style.inline")}</option>
                 </select>
             </label>
         </div>

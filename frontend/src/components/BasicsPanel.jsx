@@ -1,13 +1,14 @@
 import Slider from "./Slider.jsx";
 import { useResumeStore } from "../store/resumeStore.js";
+import { useTranslation } from "../i18n.js";
 
 const ICON_OPTIONS = [
-    { value: "", label: "🔗 Generic" },
+    { value: "", labelKey: "basics.iconGeneric" },
     { value: "linkedin", label: "LinkedIn" },
     { value: "github", label: "GitHub" },
     { value: "twitter", label: "Twitter / X" },
-    { value: "website", label: "🌐 Website" },
-    { value: "email", label: "✉️ Email" },
+    { value: "website", labelKey: "basics.iconWebsite" },
+    { value: "email", labelKey: "basics.iconEmail" },
 ];
 
 export default function BasicsPanel() {
@@ -18,6 +19,7 @@ export default function BasicsPanel() {
     const removeCustomField = useResumeStore((state) => state.removeCustomField);
     const updateCustomField = useResumeStore((state) => state.updateCustomField);
     const updatePictureField = useResumeStore((state) => state.updatePictureField);
+    const { t } = useTranslation();
 
     const basics = resume.basics || {};
     const website = basics.website || {};
@@ -27,7 +29,7 @@ export default function BasicsPanel() {
     return (
         <div className="basics-panel">
             <div className="basics-section">
-                <div className="basics-section-title">Photo</div>
+                <div className="basics-section-title">{t("basics.photo")}</div>
                 <div className="photo-row">
                     <div
                         className="photo-preview"
@@ -36,12 +38,12 @@ export default function BasicsPanel() {
                         {!picture.hidden && picture.url ? (
                             <img src={picture.url} alt="" />
                         ) : (
-                            <div className="photo-placeholder">No photo</div>
+                            <div className="photo-placeholder">{t("basics.noPhoto")}</div>
                         )}
                     </div>
                     <div className="photo-controls">
                         <label className="item-field item-field-full">
-                            <span>Photo URL</span>
+                            <span>{t("basics.photoUrl")}</span>
                             <input
                                 type="text"
                                 value={picture.url || ""}
@@ -50,7 +52,7 @@ export default function BasicsPanel() {
                             />
                         </label>
                         <Slider
-                            label="Size"
+                            label={t("basics.size")}
                             value={picture.size || 70}
                             min={40}
                             max={160}
@@ -64,37 +66,37 @@ export default function BasicsPanel() {
                                 checked={!picture.hidden}
                                 onChange={(e) => updatePictureField("hidden", !e.target.checked)}
                             />
-                            <span>Show photo on resume</span>
+                            <span>{t("basics.showPhoto")}</span>
                         </label>
                     </div>
                 </div>
             </div>
 
             <div className="basics-section">
-                <div className="basics-section-title">Personal details</div>
+                <div className="basics-section-title">{t("basics.personalDetails")}</div>
                 <div className="item-fields">
                     <label className="item-field">
-                        <span>Full name</span>
+                        <span>{t("basics.fullName")}</span>
                         <input type="text" value={basics.name || ""} onChange={(e) => updateBasicsField("name", e.target.value)} />
                     </label>
                     <label className="item-field">
-                        <span>Headline</span>
+                        <span>{t("basics.headline")}</span>
                         <input type="text" value={basics.headline || ""} onChange={(e) => updateBasicsField("headline", e.target.value)} />
                     </label>
                     <label className="item-field">
-                        <span>Email</span>
+                        <span>{t("basics.email")}</span>
                         <input type="text" value={basics.email || ""} onChange={(e) => updateBasicsField("email", e.target.value)} />
                     </label>
                     <label className="item-field">
-                        <span>Phone</span>
+                        <span>{t("basics.phone")}</span>
                         <input type="text" value={basics.phone || ""} onChange={(e) => updateBasicsField("phone", e.target.value)} />
                     </label>
                     <label className="item-field item-field-full">
-                        <span>Address</span>
+                        <span>{t("basics.address")}</span>
                         <input
                             type="text"
                             value={basics.location || ""}
-                            placeholder="Street, city, postal code, country"
+                            placeholder={t("basics.addressPlaceholder")}
                             onChange={(e) => updateBasicsField("location", e.target.value)}
                         />
                     </label>
@@ -102,14 +104,14 @@ export default function BasicsPanel() {
             </div>
 
             <div className="basics-section">
-                <div className="basics-section-title">Website</div>
+                <div className="basics-section-title">{t("basics.website")}</div>
                 <div className="item-fields">
                     <label className="item-field">
-                        <span>URL</span>
+                        <span>{t("basics.url")}</span>
                         <input type="text" value={website.url || ""} onChange={(e) => updateWebsiteField("url", e.target.value)} />
                     </label>
                     <label className="item-field">
-                        <span>Label</span>
+                        <span>{t("basics.label")}</span>
                         <input type="text" value={website.label || ""} onChange={(e) => updateWebsiteField("label", e.target.value)} />
                     </label>
                 </div>
@@ -117,24 +119,24 @@ export default function BasicsPanel() {
 
             <div className="basics-section">
                 <div className="basics-section-title-row">
-                    <div className="basics-section-title">Custom links</div>
-                    <button className="add-link-button" onClick={addCustomField}>+ Add link</button>
+                    <div className="basics-section-title">{t("basics.customLinks")}</div>
+                    <button className="add-link-button" onClick={addCustomField}>{t("basics.addLink")}</button>
                 </div>
                 {customFields.map((field) => (
                     <div key={field.id} className="item-card custom-field-row">
                         <label className="item-field field-icon">
-                            <span>Icon</span>
+                            <span>{t("basics.icon")}</span>
                             <select
                                 value={field.icon || ""}
                                 onChange={(e) => updateCustomField(field.id, "icon", e.target.value)}
                             >
                                 {ICON_OPTIONS.map((opt) => (
-                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                    <option key={opt.value} value={opt.value}>{opt.labelKey ? t(opt.labelKey) : opt.label}</option>
                                 ))}
                             </select>
                         </label>
                         <label className="item-field field-text">
-                            <span>Text</span>
+                            <span>{t("basics.text")}</span>
                             <input
                                 type="text"
                                 placeholder="LinkedIn"
@@ -143,7 +145,7 @@ export default function BasicsPanel() {
                             />
                         </label>
                         <label className="item-field field-link">
-                            <span>Link</span>
+                            <span>{t("basics.link")}</span>
                             <input
                                 type="text"
                                 placeholder="https://linkedin.com/in/..."
@@ -154,8 +156,8 @@ export default function BasicsPanel() {
                         <button
                             className="remove-link-button field-remove"
                             onClick={() => removeCustomField(field.id)}
-                            aria-label="Remove link"
-                            title="Remove link"
+                            aria-label={t("basics.removeLink")}
+                            title={t("basics.removeLink")}
                         >
                             ×
                         </button>

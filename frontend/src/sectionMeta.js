@@ -30,31 +30,31 @@ export const ADDABLE_SECTIONS = ["experience", "education", "projects", "skills"
 
 export const FIELD_LAYOUTS = {
     experience: [
-        { key: "company", label: "Company" },
-        { key: "position", label: "Position" },
-        { key: "location", label: "Location" },
-        { key: "period", label: "Period" },
+        { key: "company", labelKey: "fields.company" },
+        { key: "position", labelKey: "fields.position" },
+        { key: "location", labelKey: "fields.location" },
+        { key: "period", labelKey: "fields.period" },
     ],
     education: [
-        { key: "school", label: "School" },
-        { key: "degree", label: "Degree" },
-        { key: "area", label: "Area" },
-        { key: "period", label: "Period" },
-        { key: "grade", label: "Grade" },
+        { key: "school", labelKey: "fields.school" },
+        { key: "degree", labelKey: "fields.degree" },
+        { key: "area", labelKey: "fields.area" },
+        { key: "period", labelKey: "fields.period" },
+        { key: "grade", labelKey: "fields.grade" },
     ],
     projects: [
-        { key: "name", label: "Project name" },
-        { key: "period", label: "Period" },
+        { key: "name", labelKey: "fields.projectName" },
+        { key: "period", labelKey: "fields.period" },
     ],
     volunteer: [
-        { key: "organization", label: "Organization" },
-        { key: "location", label: "Location" },
-        { key: "period", label: "Period" },
+        { key: "organization", labelKey: "fields.organization" },
+        { key: "location", labelKey: "fields.location" },
+        { key: "period", labelKey: "fields.period" },
     ],
     certifications: [
-        { key: "name", label: "Name" },
-        { key: "issuer", label: "Issuer" },
-        { key: "date", label: "Date" },
+        { key: "name", labelKey: "fields.name" },
+        { key: "issuer", labelKey: "fields.issuer" },
+        { key: "date", labelKey: "fields.date" },
     ],
 };
 
@@ -100,23 +100,23 @@ export function blankItem(sectionKey) {
 
 // Compact preview shown on the collapsed item row - a primary label plus a
 // secondary detail, so an expanded section doesn't dump every field at once.
-export function itemSummary(sectionKey, item) {
+export function itemSummary(t, sectionKey, item) {
     switch (sectionKey) {
         case "experience":
-            return { primary: item.position || "Untitled position", secondary: item.company || "" };
+            return { primary: item.position || t("fallback.untitledPosition"), secondary: item.company || "" };
         case "education":
-            return { primary: item.degree || "Untitled degree", secondary: item.school || "" };
+            return { primary: item.degree || t("fallback.untitledDegree"), secondary: item.school || "" };
         case "projects":
-            return { primary: item.name || "Untitled project", secondary: item.period || "" };
+            return { primary: item.name || t("fallback.untitledProject"), secondary: item.period || "" };
         case "volunteer":
-            return { primary: item.organization || "Untitled", secondary: item.period || "" };
+            return { primary: item.organization || t("fallback.untitled"), secondary: item.period || "" };
         case "certifications":
-            return { primary: item.name || "Untitled certification", secondary: item.issuer || "" };
+            return { primary: item.name || t("fallback.untitledCertification"), secondary: item.issuer || "" };
         case "skills":
-            return { primary: item.name || "Untitled category", secondary: (item.keywords || []).join(", ") };
+            return { primary: item.name || t("fallback.untitledCategory"), secondary: (item.keywords || []).join(", ") };
         case "languages":
-            return { primary: item.language || "Untitled language", secondary: item.fluency || "" };
+            return { primary: item.language || t("fallback.untitledLanguage"), secondary: item.fluency || "" };
         default:
-            return { primary: "Item", secondary: "" };
+            return { primary: t("fallback.item"), secondary: "" };
     }
 }

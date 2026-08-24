@@ -4,7 +4,10 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useEffect } from "react";
 
+import { useTranslation } from "../i18n.js";
+
 export default function RichTextEditor({ value, onChange }) {
+    const { t } = useTranslation();
     const editor = useEditor({
         extensions: [
             StarterKit,
@@ -30,7 +33,7 @@ export default function RichTextEditor({ value, onChange }) {
 
     function setLink() {
         const previousUrl = editor.getAttributes("link").href;
-        const url = window.prompt("Link URL", previousUrl || "https://");
+        const url = window.prompt(t("richtext.linkUrlPrompt"), previousUrl || "https://");
 
         if (url === null) return;
 
@@ -49,7 +52,7 @@ export default function RichTextEditor({ value, onChange }) {
                     type="button"
                     className={editor.isActive("bold") ? "active" : ""}
                     onClick={() => editor.chain().focus().toggleBold().run()}
-                    title="Bold"
+                    title={t("richtext.bold")}
                 >
                     <strong>B</strong>
                 </button>
@@ -57,7 +60,7 @@ export default function RichTextEditor({ value, onChange }) {
                     type="button"
                     className={editor.isActive("italic") ? "active" : ""}
                     onClick={() => editor.chain().focus().toggleItalic().run()}
-                    title="Italic"
+                    title={t("richtext.italic")}
                 >
                     <em>I</em>
                 </button>
@@ -65,7 +68,7 @@ export default function RichTextEditor({ value, onChange }) {
                     type="button"
                     className={editor.isActive("underline") ? "active" : ""}
                     onClick={() => editor.chain().focus().toggleUnderline().run()}
-                    title="Underline"
+                    title={t("richtext.underline")}
                 >
                     <span style={{ textDecoration: "underline" }}>U</span>
                 </button>
@@ -73,7 +76,7 @@ export default function RichTextEditor({ value, onChange }) {
                     type="button"
                     className={editor.isActive("strike") ? "active" : ""}
                     onClick={() => editor.chain().focus().toggleStrike().run()}
-                    title="Strikethrough"
+                    title={t("richtext.strikethrough")}
                 >
                     <span style={{ textDecoration: "line-through" }}>S</span>
                 </button>
@@ -82,7 +85,7 @@ export default function RichTextEditor({ value, onChange }) {
                     type="button"
                     className={editor.isActive("bulletList") ? "active" : ""}
                     onClick={() => editor.chain().focus().toggleBulletList().run()}
-                    title="Bullet list"
+                    title={t("richtext.bulletList")}
                 >
                     ☰ List
                 </button>
@@ -90,7 +93,7 @@ export default function RichTextEditor({ value, onChange }) {
                     type="button"
                     className={editor.isActive("orderedList") ? "active" : ""}
                     onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                    title="Numbered list"
+                    title={t("richtext.numberedList")}
                 >
                     1. List
                 </button>
@@ -99,7 +102,7 @@ export default function RichTextEditor({ value, onChange }) {
                     type="button"
                     className={editor.isActive("link") ? "active" : ""}
                     onClick={setLink}
-                    title="Add link"
+                    title={t("richtext.addLink")}
                 >
                     🔗 Link
                 </button>

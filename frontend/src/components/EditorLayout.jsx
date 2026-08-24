@@ -7,17 +7,19 @@ import SectionList from "./SectionList.jsx";
 import StylePanel from "./StylePanel.jsx";
 import { exportPdf } from "../api.js";
 import { useResumeStore } from "../store/resumeStore.js";
+import { LANGUAGES, useTranslation } from "../i18n.js";
 
 const TABS = [
-    { id: "basics", label: "Profile" },
-    { id: "sections", label: "Sections" },
-    { id: "style", label: "Style" },
-    { id: "ats", label: "ATS Check" },
+    { id: "basics", labelKey: "tabs.profile" },
+    { id: "sections", labelKey: "tabs.sections" },
+    { id: "style", labelKey: "tabs.style" },
+    { id: "ats", labelKey: "tabs.ats" },
 ];
 
 export default function EditorLayout() {
     const resume = useResumeStore((state) => state.resume);
     const setResume = useResumeStore((state) => state.setResume);
+    const { t, language, setLanguage } = useTranslation();
     const [activeTab, setActiveTab] = useState("basics");
     const [exporting, setExporting] = useState(false);
     const [sidebarWidth, setSidebarWidth] = useState(380);
@@ -90,14 +92,25 @@ export default function EditorLayout() {
     return (
         <div className="editor-shell">
             <header className="editor-topbar">
-                <div className="editor-brand">AI Resume Design Editor</div>
+                <div className="editor-brand">{t("entry.title")}</div>
                 <div className="editor-topbar-actions">
-                    <button onClick={handleUndo} title="Undo">Undo</button>
-                    <button onClick={handleRedo} title="Redo">Redo</button>
-                    <button onClick={() => setResume(null)} className="secondary-action">Load Different Resume</button>
-                    <button onClick={handleDownloadJson} className="secondary-action">Download JSON</button>
+                    <button onClick={handleUndo} title={t("topbar.undo")}>{t("topbar.undo")}</button>
+                    <button onClick={handleRedo} title={t("topbar.redo")}>{t("topbar.redo")}</button>
+                    <button onClick={() => setResume(null)} className="secondary-action">{t("topbar.loadDifferent")}</button>
+                    <select
+                        className="language-select"
+                        value={language}
+                        onChange={(e) => setLanguage(e.target.value)}
+                        aria-label={t("topbar.language")}
+                        title={t("topbar.language")}
+                    >
+                        {LANGUAGES.map((lang) => (
+                            <option key={lang.code} value={lang.code}>{lang.label}</option>
+                        ))}
+                    </select>
+                    <button onClick={handleDownloadJson} className="secondary-action">{t("topbar.downloadJson")}</button>
                     <button onClick={handleExportPdf} className="primary-action" disabled={exporting}>
-                        {exporting ? "Exporting..." : "Export PDF"}
+                        {exporting ? t("topbar.exporting") : t("topbar.exportPdf")}
                     </button>
                 </div>
             </header>
@@ -111,7 +124,7 @@ export default function EditorLayout() {
                                 className={activeTab === tab.id ? "active" : ""}
                                 onClick={() => setActiveTab(tab.id)}
                             >
-                                {tab.label}
+                                {t(tab.labelKey)}
                             </button>
                         ))}
                     </div>

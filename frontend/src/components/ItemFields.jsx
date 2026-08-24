@@ -1,16 +1,18 @@
 import RichTextEditor from "./RichTextEditor.jsx";
 import { DESCRIPTION_SECTIONS, FIELD_LAYOUTS } from "../sectionMeta.js";
 import { useResumeStore } from "../store/resumeStore.js";
+import { useTranslation } from "../i18n.js";
 
 export default function ItemFields({ sectionKey, item }) {
     const updateItemField = useResumeStore((state) => state.updateItemField);
+    const { t } = useTranslation();
     const fields = FIELD_LAYOUTS[sectionKey] || [];
 
     return (
         <div className="item-fields">
             {fields.map((field) => (
                 <label key={field.key} className="item-field">
-                    <span>{field.label}</span>
+                    <span>{t(field.labelKey)}</span>
                     <input
                         type="text"
                         value={item[field.key] || ""}
@@ -21,7 +23,7 @@ export default function ItemFields({ sectionKey, item }) {
 
             {DESCRIPTION_SECTIONS.has(sectionKey) && (
                 <label className="item-field item-field-full">
-                    <span>Description</span>
+                    <span>{t("sections.description")}</span>
                     <RichTextEditor
                         value={item.description}
                         onChange={(html) => updateItemField(sectionKey, item.id, "description", html)}

@@ -2,11 +2,18 @@ import { useState } from "react";
 
 import { checkAts } from "../api.js";
 import { useResumeStore } from "../store/resumeStore.js";
+import { useTranslation } from "../i18n.js";
 
-const SEVERITY_LABELS = { high: "High", medium: "Medium", low: "Low", info: "Info" };
+const SEVERITY_LABEL_KEYS = {
+    high: "ats.severityHigh",
+    medium: "ats.severityMedium",
+    low: "ats.severityLow",
+    info: "ats.severityInfo",
+};
 
 export default function AtsPanel() {
     const resume = useResumeStore((state) => state.resume);
+    const { t } = useTranslation();
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -18,7 +25,7 @@ export default function AtsPanel() {
             const data = await checkAts(resume);
             setResult(data);
         } catch {
-            setError("Could not run the ATS check right now.");
+            setError(t("ats.error"));
         } finally {
             setLoading(false);
         }
@@ -27,7 +34,7 @@ export default function AtsPanel() {
     return (
         <div className="ats-panel">
             <button className="secondary-action" onClick={handleCheck} disabled={loading}>
-                {loading ? "Checking..." : "Check ATS Friendliness"}
+                {loading ? t("ats.checking") : t("ats.check")}
             </button>
 
             {error && <p className="entry-error">{error}</p>}
@@ -38,13 +45,14 @@ export default function AtsPanel() {
                         <ul className="ats-findings">
                             {result.findings.map((finding) => (
                                 <li key={finding.id} className={`ats-finding severity-${finding.severity}`}>
-                                    <span className="ats-severity-badge">{SEVERITY_LABELS[finding.severity]}</span>
+                                    <span className="ats-severity-badge">{t(SEVERITY_LABEL_KEYS[finding.severity])}</span>
                                     {finding.message}
                                 </li>
                             ))}
                         </ul>
                     )}
                     <p className="ats-report">{result.report}</p>
+                    <p className="ats-report-note">{t("ats.reportNote")}</p>
                 </div>
             )}
         </div>

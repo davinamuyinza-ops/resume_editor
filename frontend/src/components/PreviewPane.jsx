@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from "react";
 
 import { renderPreview } from "../api.js";
 import { useResumeStore } from "../store/resumeStore.js";
+import { useTranslation } from "../i18n.js";
 
 const DEBOUNCE_MS = 400;
 
 export default function PreviewPane() {
     const resume = useResumeStore((state) => state.resume);
+    const { t } = useTranslation();
     const [html, setHtml] = useState("");
     const [error, setError] = useState("");
     const [zoom, setZoom] = useState(0.75);
@@ -27,8 +29,8 @@ export default function PreviewPane() {
                     const isNetworkFailure = err instanceof TypeError;
                     setError(
                         isNetworkFailure
-                            ? "Can't reach the backend at http://127.0.0.1:8200 - is it running?"
-                            : `Preview failed: ${err.message}`
+                            ? t("preview.cantReachBackend")
+                            : t("preview.previewFailed", { message: err.message })
                     );
                 });
         }, DEBOUNCE_MS);
@@ -46,7 +48,7 @@ export default function PreviewPane() {
             {error && <p className="preview-error">{error}</p>}
             <div className="preview-page-stack">
                 <iframe
-                    title="Resume preview"
+                    title={t("preview.title")}
                     srcDoc={html}
                     className="preview-frame"
                     style={{ transform: `scale(${zoom})` }}
