@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700;900&family=Open+Sans:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700;900&family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Nunito:wght@300;400;500;600;700;800&family=Raleway:wght@300;400;500;600;700;800&family=Merriweather:wght@300;400;700;900&family=Playfair+Display:wght@400;500;600;700;800&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+{% autoescape false %}
     @page { size: {{ style.pageSize }}; margin: 0; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -10,6 +14,7 @@
         color: #111;
         font-size: {{ style.fontSize }};
         line-height: {{ style.lineHeight }};
+        font-weight: {{ style.bodyFontWeight or 400 }};
         display: flex;
         min-height: 100vh;
     }
@@ -24,13 +29,21 @@
         padding: {{ style.margin }};
     }
     .photo { width: {{ resume.picture.size or 90 }}px; height: {{ resume.picture.size or 90 }}px; border-radius: 0; object-fit: cover; margin-bottom: 16px; }
-    h1 { font-size: 1.5em; }
+    h1 {
+        font-family: {{ style.headingFontFamily or style.fontFamily }};
+        font-size: calc({{ style.headingFontSize }} * 1.4);
+        line-height: {{ style.headingLineHeight }};
+        font-weight: {{ style.headingFontWeight or 700 }};
+    }
     .headline { opacity: 0.85; font-size: 0.95em; margin-top: 2px; }
     .sidebar section { margin-top: {{ (style.sectionSpacing * 0.8) | round | int }}px; }
     .sidebar .section-title {
+        font-family: {{ style.headingFontFamily or style.fontFamily }};
+        font-size: {{ style.headingFontSize }};
+        line-height: {{ style.headingLineHeight }};
+        font-weight: {{ style.headingFontWeight or 700 }};
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        font-size: 0.8em;
         border-bottom: 1px solid rgba(255,255,255,0.4);
         padding-bottom: 3px;
         margin-bottom: 8px;
@@ -58,10 +71,13 @@
     .sidebar .skill-keywords { opacity: 0.8; font-size: 0.92em; }
 
     .main .section-title {
+        font-family: {{ style.headingFontFamily or style.fontFamily }};
+        font-size: {{ style.headingFontSize }};
+        line-height: {{ style.headingLineHeight }};
+        font-weight: {{ style.headingFontWeight or 700 }};
         color: {{ style.primaryColor }};
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        font-size: 0.85em;
         border-bottom: 1.5px solid {{ style.primaryColor }};
         padding-bottom: 3px;
         margin-bottom: 8px;
@@ -74,6 +90,7 @@
     .item-sub { color: #444; margin-top: 1px; }
     .item-desc { margin-top: 3px; }
     .item-desc ul { padding-left: 18px; }
+{% endautoescape %}
 </style>
 </head>
 <body>

@@ -22,6 +22,11 @@ DEFAULT_STYLE = {
     "sectionSpacing": 20,
     "skillsLayout": "stacked",
     "languagesLayout": "stacked",
+    "bodyFontWeight": 400,
+    "headingFontFamily": "Lato, 'Segoe UI', Arial, sans-serif",
+    "headingFontSize": "10pt",
+    "headingLineHeight": "1.3",
+    "headingFontWeight": 700,
 }
 
 # Playwright's PDF engine needs a concrete page size. "free" is approximated

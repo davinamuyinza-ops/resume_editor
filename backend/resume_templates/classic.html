@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700;900&family=Open+Sans:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700;900&family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Nunito:wght@300;400;500;600;700;800&family=Raleway:wght@300;400;500;600;700;800&family=Merriweather:wght@300;400;700;900&family=Playfair+Display:wght@400;500;600;700;800&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+{% autoescape false %}
     @page { size: {{ style.pageSize }}; margin: 0; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -10,9 +14,16 @@
         color: #111;
         font-size: {{ style.fontSize }};
         line-height: {{ style.lineHeight }};
+        font-weight: {{ style.bodyFontWeight or 400 }};
         padding: {{ style.margin }};
     }
-    h1 { font-size: 1.9em; color: {{ style.primaryColor }}; }
+    h1 {
+        font-family: {{ style.headingFontFamily or style.fontFamily }};
+        font-size: calc({{ style.headingFontSize }} * 1.8);
+        line-height: {{ style.headingLineHeight }};
+        font-weight: {{ style.headingFontWeight or 700 }};
+        color: {{ style.primaryColor }};
+    }
     .headline { color: #444; font-size: 1.05em; margin-top: 2px; }
     .contact-row { margin-top: 8px; color: #333; display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; }
     .contact-row span { display: inline-flex; align-items: center; }
@@ -35,10 +46,13 @@
     .photo { float: right; width: {{ resume.picture.size or 70 }}px; height: {{ resume.picture.size or 70 }}px; border-radius: 0; object-fit: cover; margin-left: 16px; margin-bottom: 8px; }
     section { margin-top: {{ style.sectionSpacing }}px; }
     .section-title {
+        font-family: {{ style.headingFontFamily or style.fontFamily }};
+        font-size: {{ style.headingFontSize }};
+        line-height: {{ style.headingLineHeight }};
+        font-weight: {{ style.headingFontWeight or 700 }};
         color: {{ style.primaryColor }};
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        font-size: 0.85em;
         border-bottom: 1.5px solid {{ style.primaryColor }};
         padding-bottom: 3px;
         margin-bottom: 8px;
@@ -68,6 +82,7 @@
     }
     .skill-name { font-weight: bold; }
     .skill-keywords { color: #555; }
+{% endautoescape %}
 </style>
 </head>
 <body>

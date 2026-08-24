@@ -704,6 +704,12 @@ button {
     margin-bottom: 0;
 }
 
+.style-section-spacer {
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
 .photo-row {
     display: flex;
     gap: 16px;
