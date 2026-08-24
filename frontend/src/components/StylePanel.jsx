@@ -82,7 +82,7 @@ export default function StylePanel() {
             <Slider
                 label="Margin (page edge to content)"
                 value={parseMargin(metadata.margin)}
-                min={8}
+                min={2}
                 max={28}
                 step={1}
                 unit="mm"
@@ -92,9 +92,9 @@ export default function StylePanel() {
             <Slider
                 label="Padding (spacing between sections)"
                 value={metadata.sectionSpacing || 20}
-                min={12}
+                min={5}
                 max={40}
-                step={2}
+                step={1}
                 unit="px"
                 onChange={(value) => updateMetadataField("sectionSpacing", value)}
             />
