@@ -1,10 +1,11 @@
 import { useState } from "react";
 
 import RichTextEditor from "./RichTextEditor.jsx";
-import { ADDABLE_SECTIONS, blankItem, DESCRIPTION_SECTIONS, FIELD_LAYOUTS, FLUENCY_LEVELS, levelForFluency, SECTION_LABELS } from "../sectionMeta.js";
+import { ADDABLE_SECTIONS, blankItem, DESCRIPTION_SECTIONS, FIELD_LAYOUTS, FLUENCY_LEVELS, getSectionTitle, levelForFluency } from "../sectionMeta.js";
 import { useResumeStore } from "../store/resumeStore.js";
 
 export default function AddItemForm() {
+    const resume = useResumeStore((state) => state.resume);
     const addItem = useResumeStore((state) => state.addItem);
     const [sectionKey, setSectionKey] = useState("experience");
     const [fields, setFields] = useState({});
@@ -47,7 +48,7 @@ export default function AddItemForm() {
                 <span className="add-item-title">Add new item</span>
                 <select value={sectionKey} onChange={(e) => handleSectionChange(e.target.value)}>
                     {ADDABLE_SECTIONS.map((key) => (
-                        <option key={key} value={key}>{SECTION_LABELS[key]}</option>
+                        <option key={key} value={key}>{getSectionTitle(resume, key)}</option>
                     ))}
                 </select>
             </div>
@@ -107,7 +108,7 @@ export default function AddItemForm() {
             </div>
 
             <button className="primary-action add-item-button" onClick={handleAdd}>
-                + Add to {SECTION_LABELS[sectionKey]}
+                + Add to {getSectionTitle(resume, sectionKey)}
             </button>
         </div>
     );

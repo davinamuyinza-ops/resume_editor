@@ -7,33 +7,89 @@ import AddItemForm from "./AddItemForm.jsx";
 import ItemFields from "./ItemFields.jsx";
 import Modal from "./Modal.jsx";
 import RichTextEditor from "./RichTextEditor.jsx";
-import { DEFAULT_ORDER, FLUENCY_LEVELS, itemSummary, levelForFluency, MOVABLE_SECTIONS, SECTION_LABELS } from "../sectionMeta.js";
+import { DEFAULT_ORDER, FLUENCY_LEVELS, getSectionTitle, itemSummary, levelForFluency, MOVABLE_SECTIONS } from "../sectionMeta.js";
 import { useResumeStore } from "../store/resumeStore.js";
+
+function SectionMenu({ sectionKey, hidden, onRename }) {
+    const [open, setOpen] = useState(false);
+    const menuRef = useRef(null);
+    const toggleSectionHidden = useResumeStore((state) => state.toggleSectionHidden);
+
+    useEffect(() => {
+        if (!open) return;
+        function handleClickOutside(event) {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [open]);
+
+    return (
+        <div className="item-menu-wrapper" ref={menuRef}>
+            <button className="item-menu-trigger" onClick={() => setOpen((o) => !o)} aria-label="More options">⋮</button>
+            {open && (
+                <div className="item-menu-dropdown">
+                    {sectionKey !== "summary" && (
+                        <button onClick={() => { toggleSectionHidden(sectionKey); setOpen(false); }}>
+                            {hidden ? "Show" : "Hide"}
+                        </button>
+                    )}
+                    <button onClick={() => { onRename(); setOpen(false); }}>Rename</button>
+                </div>
+            )}
+        </div>
+    );
+}
 
 function SortableSection({ sectionKey, expanded, onToggleExpand, children }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: sectionKey });
     const resume = useResumeStore((state) => state.resume);
-    const toggleSectionHidden = useResumeStore((state) => state.toggleSectionHidden);
+    const updateSectionTitle = useResumeStore((state) => state.updateSectionTitle);
+    const [isRenaming, setIsRenaming] = useState(false);
+    const [draftTitle, setDraftTitle] = useState("");
 
     const style = { transform: CSS.Transform.toString(transform), transition };
     const section = sectionKey === "summary" ? resume.summary : resume.sections[sectionKey];
     const hidden = section?.hidden;
+    const title = getSectionTitle(resume, sectionKey);
+
+    function startRename() {
+        setDraftTitle(title);
+        setIsRenaming(true);
+    }
+
+    function commitRename() {
+        const trimmed = draftTitle.trim();
+        if (trimmed) {
+            updateSectionTitle(sectionKey, trimmed);
+        }
+        setIsRenaming(false);
+    }
 
     return (
         <div ref={setNodeRef} style={style} className="section-row">
             <div className="section-row-header">
                 <button className="drag-handle" {...attributes} {...listeners} aria-label="Drag to reorder">⠿</button>
-                <button className="section-expand-toggle" onClick={onToggleExpand}>
-                    <span className="chevron">{expanded ? "▾" : "▸"}</span> {SECTION_LABELS[sectionKey]}
-                </button>
-                {sectionKey !== "summary" && (
-                    <button
-                        className={`visibility-toggle ${hidden ? "hidden-state" : ""}`}
-                        onClick={() => toggleSectionHidden(sectionKey)}
-                    >
-                        {hidden ? "Hidden" : "Visible"}
+                {isRenaming ? (
+                    <input
+                        className="section-rename-input"
+                        value={draftTitle}
+                        autoFocus
+                        onChange={(e) => setDraftTitle(e.target.value)}
+                        onBlur={commitRename}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") commitRename();
+                            if (e.key === "Escape") setIsRenaming(false);
+                        }}
+                    />
+                ) : (
+                    <button className="section-expand-toggle" onClick={onToggleExpand}>
+                        <span className="chevron">{expanded ? "▾" : "▸"}</span> {title}
                     </button>
                 )}
+                <SectionMenu sectionKey={sectionKey} hidden={hidden} onRename={startRename} />
             </div>
             {expanded && <div className="section-body">{children}</div>}
         </div>
@@ -168,7 +224,7 @@ export default function SectionList() {
             </DndContext>
 
             {editingItem && editingItemData && (
-                <Modal title={SECTION_LABELS[editingItem.sectionKey]} onClose={() => setEditingItem(null)}>
+                <Modal title={getSectionTitle(resume, editingItem.sectionKey)} onClose={() => setEditingItem(null)}>
                     {editingItem.sectionKey === "skills" && (
                         <div className="item-fields">
                             <label className="item-field">
@@ -241,7 +297,7 @@ export default function SectionList() {
                                 >
                                     <option value="">Choose section...</option>
                                     {MOVABLE_SECTIONS.filter((s) => s !== editingItem.sectionKey).map((s) => (
-                                        <option key={s} value={s}>{SECTION_LABELS[s]}</option>
+                                        <option key={s} value={s}>{getSectionTitle(resume, s)}</option>
                                     ))}
                                 </select>
                             </label>

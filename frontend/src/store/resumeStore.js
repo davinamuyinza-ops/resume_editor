@@ -111,6 +111,28 @@ export const useResumeStore = create(
                     };
                 }),
 
+            updateSectionTitle: (sectionKey, title) =>
+                set((state) => {
+                    if (sectionKey === "summary") {
+                        return {
+                            resume: {
+                                ...state.resume,
+                                summary: { ...state.resume.summary, title },
+                            },
+                        };
+                    }
+                    const section = state.resume.sections[sectionKey];
+                    return {
+                        resume: {
+                            ...state.resume,
+                            sections: {
+                                ...state.resume.sections,
+                                [sectionKey]: { ...section, title },
+                            },
+                        },
+                    };
+                }),
+
             updateItemField: (sectionKey, itemId, field, value) =>
                 set((state) => {
                     const section = state.resume.sections[sectionKey];

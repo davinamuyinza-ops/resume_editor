@@ -11,6 +11,16 @@ export const SECTION_LABELS = {
 
 export const DEFAULT_ORDER = Object.keys(SECTION_LABELS);
 
+// The user-editable title actually stored on the resume, falling back to
+// the generic label only until they rename it (or for sections not yet
+// given a custom title).
+export function getSectionTitle(resume, sectionKey) {
+    if (sectionKey === "summary") {
+        return resume.summary?.title || SECTION_LABELS.summary;
+    }
+    return resume.sections?.[sectionKey]?.title || SECTION_LABELS[sectionKey];
+}
+
 // Sections whose items share the "long-form" shape (company/school/name +
 // period + description) and can be moved between each other.
 export const MOVABLE_SECTIONS = ["experience", "education", "projects", "volunteer", "certifications"];
