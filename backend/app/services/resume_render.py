@@ -21,6 +21,7 @@ DEFAULT_STYLE = {
     "lineHeight": "1.45",
     "sectionSpacing": 20,
     "skillsLayout": "stacked",
+    "languagesLayout": "stacked",
 }
 
 # Playwright's PDF engine needs a concrete page size. "free" is approximated

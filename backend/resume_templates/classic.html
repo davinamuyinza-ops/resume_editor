@@ -58,7 +58,14 @@
         flex-direction: column; gap: 6px;
         {% endif %}
     }
-    .languages-list { display: flex; flex-wrap: wrap; gap: 10px 24px; }
+    .languages-list {
+        display: flex;
+        {% if style.languagesLayout == "inline" %}
+        flex-direction: row; flex-wrap: wrap; gap: 10px 24px;
+        {% else %}
+        flex-direction: column; gap: 6px;
+        {% endif %}
+    }
     .skill-name { font-weight: bold; }
     .skill-keywords { color: #555; }
 </style>

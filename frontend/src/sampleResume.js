@@ -108,5 +108,6 @@ export const SAMPLE_RESUME = {
         lineHeight: "1.45",
         sectionSpacing: 20,
         skillsLayout: "stacked",
+        languagesLayout: "stacked",
     },
 };
