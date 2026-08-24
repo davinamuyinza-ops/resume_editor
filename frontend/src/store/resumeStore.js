@@ -128,6 +128,51 @@ export const useResumeStore = create(
                     };
                 }),
 
+            addItem: (sectionKey, item) =>
+                set((state) => {
+                    const section = state.resume.sections[sectionKey];
+                    return {
+                        resume: {
+                            ...state.resume,
+                            sections: {
+                                ...state.resume.sections,
+                                [sectionKey]: { ...section, items: [...section.items, item] },
+                            },
+                        },
+                    };
+                }),
+
+            deleteItem: (sectionKey, itemId) =>
+                set((state) => {
+                    const section = state.resume.sections[sectionKey];
+                    return {
+                        resume: {
+                            ...state.resume,
+                            sections: {
+                                ...state.resume.sections,
+                                [sectionKey]: { ...section, items: section.items.filter((i) => i.id !== itemId) },
+                            },
+                        },
+                    };
+                }),
+
+            toggleItemHidden: (sectionKey, itemId) =>
+                set((state) => {
+                    const section = state.resume.sections[sectionKey];
+                    const items = section.items.map((item) =>
+                        item.id === itemId ? { ...item, hidden: !item.hidden } : item
+                    );
+                    return {
+                        resume: {
+                            ...state.resume,
+                            sections: {
+                                ...state.resume.sections,
+                                [sectionKey]: { ...section, items },
+                            },
+                        },
+                    };
+                }),
+
             reorderItems: (sectionKey, newItems) =>
                 set((state) => {
                     const section = state.resume.sections[sectionKey];

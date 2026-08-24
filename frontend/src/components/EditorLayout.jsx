@@ -9,7 +9,7 @@ import { exportPdf } from "../api.js";
 import { useResumeStore } from "../store/resumeStore.js";
 
 const TABS = [
-    { id: "basics", label: "Basics" },
+    { id: "basics", label: "Profile" },
     { id: "sections", label: "Sections" },
     { id: "style", label: "Style" },
     { id: "ats", label: "ATS Check" },
