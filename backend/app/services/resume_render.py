@@ -19,6 +19,7 @@ DEFAULT_STYLE = {
     "primaryColor": "#0f3381",
     "margin": "14mm 16mm",
     "lineHeight": "1.45",
+    "sectionSpacing": 20,
 }
 
 # Playwright's PDF engine needs a concrete page size. "free" is approximated

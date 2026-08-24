@@ -26,7 +26,7 @@
     .photo { width: {{ resume.picture.size or 90 }}px; height: {{ resume.picture.size or 90 }}px; border-radius: 0; object-fit: cover; margin-bottom: 16px; }
     h1 { font-size: 1.5em; }
     .headline { opacity: 0.85; font-size: 0.95em; margin-top: 2px; }
-    .sidebar section { margin-top: 16px; }
+    .sidebar section { margin-top: {{ style.sectionSpacing - 4 }}px; }
     .sidebar .section-title {
         text-transform: uppercase;
         letter-spacing: 0.06em;
@@ -49,8 +49,8 @@
         padding-bottom: 3px;
         margin-bottom: 8px;
     }
-    .main section { margin-top: 20px; }
-    .item { margin-bottom: 13px; }
+    .main section { margin-top: {{ style.sectionSpacing }}px; }
+    .item { margin-bottom: {{ style.sectionSpacing - 7 }}px; }
     .item-row { display: flex; justify-content: space-between; }
     .item-row .left { font-weight: bold; }
     .item-row .right { color: #555; }

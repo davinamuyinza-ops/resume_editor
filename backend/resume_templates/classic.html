@@ -17,7 +17,7 @@
     .contact-row { margin-top: 8px; color: #333; }
     .contact-row span { margin-right: 14px; }
     .photo { float: right; width: {{ resume.picture.size or 70 }}px; height: {{ resume.picture.size or 70 }}px; border-radius: 0; object-fit: cover; margin-left: 16px; margin-bottom: 8px; }
-    section { margin-top: 20px; }
+    section { margin-top: {{ style.sectionSpacing }}px; }
     .section-title {
         color: {{ style.primaryColor }};
         text-transform: uppercase;
@@ -27,7 +27,7 @@
         padding-bottom: 3px;
         margin-bottom: 8px;
     }
-    .item { margin-bottom: 13px; }
+    .item { margin-bottom: {{ style.sectionSpacing - 7 }}px; }
     .item-row { display: flex; justify-content: space-between; }
     .item-row .left { font-weight: bold; }
     .item-row .right { color: #555; }
