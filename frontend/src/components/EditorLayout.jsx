@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import AtsPanel from "./AtsPanel.jsx";
 import BasicsPanel from "./BasicsPanel.jsx";
@@ -20,6 +20,36 @@ export default function EditorLayout() {
     const setResume = useResumeStore((state) => state.setResume);
     const [activeTab, setActiveTab] = useState("basics");
     const [exporting, setExporting] = useState(false);
+    const [sidebarWidth, setSidebarWidth] = useState(380);
+    const isDraggingRef = useRef(false);
+
+    useEffect(() => {
+        function handleMouseMove(event) {
+            if (!isDraggingRef.current) return;
+            const newWidth = Math.min(Math.max(event.clientX, 280), 800);
+            setSidebarWidth(newWidth);
+        }
+
+        function handleMouseUp() {
+            if (!isDraggingRef.current) return;
+            isDraggingRef.current = false;
+            document.body.style.cursor = "";
+            document.body.style.userSelect = "";
+        }
+
+        document.addEventListener("mousemove", handleMouseMove);
+        document.addEventListener("mouseup", handleMouseUp);
+        return () => {
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleMouseUp);
+        };
+    }, []);
+
+    function handleDividerMouseDown() {
+        isDraggingRef.current = true;
+        document.body.style.cursor = "col-resize";
+        document.body.style.userSelect = "none";
+    }
 
     function handleUndo() {
         useResumeStore.temporal.getState().undo();
@@ -73,7 +103,7 @@ export default function EditorLayout() {
             </header>
 
             <div className="editor-body">
-                <aside className="editor-sidebar">
+                <aside className="editor-sidebar" style={{ width: sidebarWidth }}>
                     <div className="editor-tabs">
                         {TABS.map((tab) => (
                             <button
@@ -93,6 +123,8 @@ export default function EditorLayout() {
                         {activeTab === "ats" && <AtsPanel />}
                     </div>
                 </aside>
+
+                <div className="editor-divider" onMouseDown={handleDividerMouseDown} />
 
                 <main className="editor-preview-area">
                     <PreviewPane />

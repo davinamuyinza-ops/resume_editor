@@ -122,7 +122,7 @@ export default function BasicsPanel() {
                 </div>
                 {customFields.map((field) => (
                     <div key={field.id} className="item-card custom-field-row">
-                        <label className="item-field">
+                        <label className="item-field field-icon">
                             <span>Icon</span>
                             <select
                                 value={field.icon || ""}
@@ -133,7 +133,7 @@ export default function BasicsPanel() {
                                 ))}
                             </select>
                         </label>
-                        <label className="item-field">
+                        <label className="item-field field-text">
                             <span>Text</span>
                             <input
                                 type="text"
@@ -142,7 +142,7 @@ export default function BasicsPanel() {
                                 onChange={(e) => updateCustomField(field.id, "text", e.target.value)}
                             />
                         </label>
-                        <label className="item-field">
+                        <label className="item-field field-link">
                             <span>Link</span>
                             <input
                                 type="text"
@@ -151,7 +151,14 @@ export default function BasicsPanel() {
                                 onChange={(e) => updateCustomField(field.id, "link", e.target.value)}
                             />
                         </label>
-                        <button className="remove-link-button" onClick={() => removeCustomField(field.id)}>Remove</button>
+                        <button
+                            className="remove-link-button field-remove"
+                            onClick={() => removeCustomField(field.id)}
+                            aria-label="Remove link"
+                            title="Remove link"
+                        >
+                            ×
+                        </button>
                     </div>
                 ))}
             </div>
