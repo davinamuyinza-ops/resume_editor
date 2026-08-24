@@ -107,5 +107,6 @@ export const SAMPLE_RESUME = {
         margin: "14mm 16mm",
         lineHeight: "1.45",
         sectionSpacing: 20,
+        skillsLayout: "stacked",
     },
 };

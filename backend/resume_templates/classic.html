@@ -50,7 +50,15 @@
     .item-sub { color: #444; margin-top: 1px; }
     .item-desc { margin-top: 3px; }
     .item-desc ul { padding-left: 18px; }
-    .skills-list, .languages-list { display: flex; flex-wrap: wrap; gap: 10px 24px; }
+    .skills-list {
+        display: flex;
+        {% if style.skillsLayout == "inline" %}
+        flex-direction: row; flex-wrap: wrap; gap: 10px 24px;
+        {% else %}
+        flex-direction: column; gap: 6px;
+        {% endif %}
+    }
+    .languages-list { display: flex; flex-wrap: wrap; gap: 10px 24px; }
     .skill-name { font-weight: bold; }
     .skill-keywords { color: #555; }
 </style>

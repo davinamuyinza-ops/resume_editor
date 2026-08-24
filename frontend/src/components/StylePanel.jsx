@@ -100,6 +100,17 @@ export default function StylePanel() {
             />
 
             <label className="style-field">
+                <span>Skills layout</span>
+                <select
+                    value={metadata.skillsLayout || "stacked"}
+                    onChange={(e) => updateMetadataField("skillsLayout", e.target.value)}
+                >
+                    <option value="stacked">Stacked (one category per line)</option>
+                    <option value="inline">Inline (wrapped)</option>
+                </select>
+            </label>
+
+            <label className="style-field">
                 <span>Page format</span>
                 <select value={metadata.pageFormat} onChange={(e) => updateMetadataField("pageFormat", e.target.value)}>
                     {PAGE_FORMATS.map((p) => <option key={p.value} value={p.value}>{p.label}</option>)}
