@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { exportPdf, renderPreview } from "../api.js";
 import { useResumeStore } from "../store/resumeStore.js";
 import { useTranslation } from "../i18n.js";
+import PdfPageView from "./PdfPageView.jsx";
 
 const HTML_DEBOUNCE_MS = 400;
 // PDF generation launches a real browser to render each update, so it's
@@ -14,14 +15,13 @@ export default function PreviewPane() {
     const resume = useResumeStore((state) => state.resume);
     const { t } = useTranslation();
     const [html, setHtml] = useState("");
-    const [pdfUrl, setPdfUrl] = useState("");
+    const [pdfBytes, setPdfBytes] = useState(null);
     const [pageView, setPageView] = useState(false);
     const [pdfLoading, setPdfLoading] = useState(false);
     const [error, setError] = useState("");
     const [zoom, setZoom] = useState(0.75);
     const [retryTick, setRetryTick] = useState(0);
     const debounceRef = useRef(null);
-    const pdfUrlRef = useRef("");
 
     useEffect(() => {
         if (debounceRef.current) {
@@ -41,11 +41,9 @@ export default function PreviewPane() {
             setPdfLoading(true);
             debounceRef.current = setTimeout(() => {
                 exportPdf(resume)
-                    .then((blob) => {
-                        const url = URL.createObjectURL(blob);
-                        if (pdfUrlRef.current) URL.revokeObjectURL(pdfUrlRef.current);
-                        pdfUrlRef.current = url;
-                        setPdfUrl(url);
+                    .then((blob) => blob.arrayBuffer())
+                    .then((buffer) => {
+                        setPdfBytes(buffer);
                         setError("");
                     })
                     .catch(handleFailure)
@@ -64,12 +62,6 @@ export default function PreviewPane() {
 
         return () => clearTimeout(debounceRef.current);
     }, [resume, retryTick, pageView]);
-
-    useEffect(() => {
-        return () => {
-            if (pdfUrlRef.current) URL.revokeObjectURL(pdfUrlRef.current);
-        };
-    }, []);
 
     return (
         <div className="preview-pane">
@@ -98,14 +90,7 @@ export default function PreviewPane() {
 
             <div className="preview-page-stack">
                 {pageView ? (
-                    pdfUrl && (
-                        <iframe
-                            title={t("preview.title")}
-                            src={pdfUrl}
-                            className="preview-frame"
-                            style={{ transform: `scale(${zoom})` }}
-                        />
-                    )
+                    pdfBytes && <PdfPageView pdfBytes={pdfBytes} zoom={zoom} />
                 ) : (
                     <iframe
                         title={t("preview.title")}
