@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import AtsPanel from "./AtsPanel.jsx";
 import BasicsPanel from "./BasicsPanel.jsx";
+import CompletionMeter from "./CompletionMeter.jsx";
 import PreviewPane from "./PreviewPane.jsx";
 import SectionList from "./SectionList.jsx";
 import StylePanel from "./StylePanel.jsx";
@@ -23,7 +24,15 @@ export default function EditorLayout() {
     const [activeTab, setActiveTab] = useState("basics");
     const [exporting, setExporting] = useState(false);
     const [sidebarWidth, setSidebarWidth] = useState(380);
+    const [toast, setToast] = useState("");
     const isDraggingRef = useRef(false);
+    const toastTimerRef = useRef(null);
+
+    function showToast(message) {
+        setToast(message);
+        clearTimeout(toastTimerRef.current);
+        toastTimerRef.current = setTimeout(() => setToast(""), 2600);
+    }
 
     useEffect(() => {
         function handleMouseMove(event) {
@@ -71,8 +80,9 @@ export default function EditorLayout() {
             link.download = "resume.pdf";
             link.click();
             URL.revokeObjectURL(url);
+            showToast(t("topbar.exportSuccess"));
         } catch {
-            // surfaced via disabled state resetting; a toast could be added later
+            showToast(t("topbar.exportFailed"));
         } finally {
             setExporting(false);
         }
@@ -115,8 +125,18 @@ export default function EditorLayout() {
                 </div>
             </header>
 
+            {toast && (
+                <div className="app-toast">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 6 9 17l-5-5"></path>
+                    </svg>
+                    {toast}
+                </div>
+            )}
+
             <div className="editor-body">
                 <aside className="editor-sidebar" style={{ width: sidebarWidth }}>
+                    <CompletionMeter />
                     <div className="editor-tabs">
                         {TABS.map((tab) => (
                             <button

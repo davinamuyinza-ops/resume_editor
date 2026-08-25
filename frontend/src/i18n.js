@@ -33,6 +33,9 @@ const en = {
     "topbar.downloadJson": "Download JSON",
     "topbar.exportPdf": "Export PDF",
     "topbar.exporting": "Exporting...",
+    "topbar.exportSuccess": "PDF downloaded",
+    "topbar.exportFailed": "Export failed - try again",
+    "completion.label": "Resume strength",
     "topbar.language": "Language",
 
     "tabs.profile": "Profile",
@@ -192,6 +195,9 @@ const de = {
     "topbar.downloadJson": "JSON herunterladen",
     "topbar.exportPdf": "PDF exportieren",
     "topbar.exporting": "Wird exportiert...",
+    "topbar.exportSuccess": "PDF heruntergeladen",
+    "topbar.exportFailed": "Export fehlgeschlagen - erneut versuchen",
+    "completion.label": "Lebenslauf-Stärke",
     "topbar.language": "Sprache",
 
     "tabs.profile": "Profil",
@@ -351,6 +357,9 @@ const fr = {
     "topbar.downloadJson": "Télécharger le JSON",
     "topbar.exportPdf": "Exporter en PDF",
     "topbar.exporting": "Exportation...",
+    "topbar.exportSuccess": "PDF téléchargé",
+    "topbar.exportFailed": "Échec de l'export - réessayez",
+    "completion.label": "Solidité du CV",
     "topbar.language": "Langue",
 
     "tabs.profile": "Profil",
@@ -510,6 +519,9 @@ const es = {
     "topbar.downloadJson": "Descargar JSON",
     "topbar.exportPdf": "Exportar PDF",
     "topbar.exporting": "Exportando...",
+    "topbar.exportSuccess": "PDF descargado",
+    "topbar.exportFailed": "Error al exportar - inténtalo de nuevo",
+    "completion.label": "Solidez del CV",
     "topbar.language": "Idioma",
 
     "tabs.profile": "Perfil",
@@ -669,6 +681,9 @@ const pt = {
     "topbar.downloadJson": "Transferir JSON",
     "topbar.exportPdf": "Exportar PDF",
     "topbar.exporting": "A exportar...",
+    "topbar.exportSuccess": "PDF transferido",
+    "topbar.exportFailed": "Falha na exportação - tente novamente",
+    "completion.label": "Solidez do currículo",
     "topbar.language": "Idioma",
 
     "tabs.profile": "Perfil",
@@ -828,6 +843,9 @@ const it = {
     "topbar.downloadJson": "Scarica JSON",
     "topbar.exportPdf": "Esporta PDF",
     "topbar.exporting": "Esportazione...",
+    "topbar.exportSuccess": "PDF scaricato",
+    "topbar.exportFailed": "Esportazione non riuscita - riprova",
+    "completion.label": "Solidità del CV",
     "topbar.language": "Lingua",
 
     "tabs.profile": "Profilo",
@@ -987,6 +1005,9 @@ const nl = {
     "topbar.downloadJson": "JSON downloaden",
     "topbar.exportPdf": "PDF exporteren",
     "topbar.exporting": "Bezig met exporteren...",
+    "topbar.exportSuccess": "PDF gedownload",
+    "topbar.exportFailed": "Exporteren mislukt - probeer opnieuw",
+    "completion.label": "Cv-sterkte",
     "topbar.language": "Taal",
 
     "tabs.profile": "Profiel",
@@ -1146,6 +1167,9 @@ const pl = {
     "topbar.downloadJson": "Pobierz JSON",
     "topbar.exportPdf": "Eksportuj PDF",
     "topbar.exporting": "Eksportowanie...",
+    "topbar.exportSuccess": "PDF pobrany",
+    "topbar.exportFailed": "Eksport nie powiódł się - spróbuj ponownie",
+    "completion.label": "Siła CV",
     "topbar.language": "Język",
 
     "tabs.profile": "Profil",
@@ -1305,6 +1329,9 @@ const tr = {
     "topbar.downloadJson": "JSON indir",
     "topbar.exportPdf": "PDF olarak dışa aktar",
     "topbar.exporting": "Dışa aktarılıyor...",
+    "topbar.exportSuccess": "PDF indirildi",
+    "topbar.exportFailed": "Dışa aktarma başarısız - tekrar deneyin",
+    "completion.label": "Özgeçmiş gücü",
     "topbar.language": "Dil",
 
     "tabs.profile": "Profil",
@@ -1464,6 +1491,9 @@ const ru = {
     "topbar.downloadJson": "Скачать JSON",
     "topbar.exportPdf": "Экспортировать PDF",
     "topbar.exporting": "Экспорт...",
+    "topbar.exportSuccess": "PDF загружен",
+    "topbar.exportFailed": "Ошибка экспорта - попробуйте снова",
+    "completion.label": "Сила резюме",
     "topbar.language": "Язык",
 
     "tabs.profile": "Профиль",
@@ -1623,6 +1653,9 @@ const ar = {
     "topbar.downloadJson": "تنزيل JSON",
     "topbar.exportPdf": "تصدير PDF",
     "topbar.exporting": "جارٍ التصدير...",
+    "topbar.exportSuccess": "تم تنزيل PDF",
+    "topbar.exportFailed": "فشل التصدير - حاول مرة أخرى",
+    "completion.label": "قوة السيرة الذاتية",
     "topbar.language": "اللغة",
 
     "tabs.profile": "الملف الشخصي",
@@ -1782,6 +1815,9 @@ const zh = {
     "topbar.downloadJson": "下载 JSON",
     "topbar.exportPdf": "导出 PDF",
     "topbar.exporting": "正在导出...",
+    "topbar.exportSuccess": "PDF 已下载",
+    "topbar.exportFailed": "导出失败 - 请重试",
+    "completion.label": "简历完整度",
     "topbar.language": "语言",
 
     "tabs.profile": "个人资料",
