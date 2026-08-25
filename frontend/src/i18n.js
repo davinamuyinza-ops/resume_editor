@@ -145,6 +145,9 @@ const en = {
     "preview.previewFailed": "Preview failed: {message}",
     "preview.title": "Resume preview",
     "preview.retry": "Retry",
+    "preview.pageView": "Page view",
+    "preview.continuousView": "Continuous view",
+    "preview.generatingPages": "Generating pages...",
 
     "richtext.bold": "Bold",
     "richtext.italic": "Italic",
@@ -295,6 +298,9 @@ const de = {
     "preview.previewFailed": "Vorschau fehlgeschlagen: {message}",
     "preview.title": "Lebenslauf-Vorschau",
     "preview.retry": "Erneut versuchen",
+    "preview.pageView": "Seitenansicht",
+    "preview.continuousView": "Fortlaufende Ansicht",
+    "preview.generatingPages": "Seiten werden erstellt...",
 
     "richtext.bold": "Fett",
     "richtext.italic": "Kursiv",
@@ -445,6 +451,9 @@ const fr = {
     "preview.previewFailed": "Échec de l'aperçu : {message}",
     "preview.title": "Aperçu du CV",
     "preview.retry": "Réessayer",
+    "preview.pageView": "Vue en pages",
+    "preview.continuousView": "Vue continue",
+    "preview.generatingPages": "Génération des pages...",
 
     "richtext.bold": "Gras",
     "richtext.italic": "Italique",
@@ -595,6 +604,9 @@ const es = {
     "preview.previewFailed": "Error en la vista previa: {message}",
     "preview.title": "Vista previa del CV",
     "preview.retry": "Reintentar",
+    "preview.pageView": "Vista de páginas",
+    "preview.continuousView": "Vista continua",
+    "preview.generatingPages": "Generando páginas...",
 
     "richtext.bold": "Negrita",
     "richtext.italic": "Cursiva",
@@ -745,6 +757,9 @@ const pt = {
     "preview.previewFailed": "Falha na pré-visualização: {message}",
     "preview.title": "Pré-visualização do currículo",
     "preview.retry": "Tentar novamente",
+    "preview.pageView": "Vista de páginas",
+    "preview.continuousView": "Vista contínua",
+    "preview.generatingPages": "A gerar páginas...",
 
     "richtext.bold": "Negrito",
     "richtext.italic": "Itálico",
@@ -895,6 +910,9 @@ const it = {
     "preview.previewFailed": "Anteprima non riuscita: {message}",
     "preview.title": "Anteprima del CV",
     "preview.retry": "Riprova",
+    "preview.pageView": "Vista pagine",
+    "preview.continuousView": "Vista continua",
+    "preview.generatingPages": "Generazione pagine...",
 
     "richtext.bold": "Grassetto",
     "richtext.italic": "Corsivo",
@@ -1045,6 +1063,9 @@ const nl = {
     "preview.previewFailed": "Voorbeeld mislukt: {message}",
     "preview.title": "Cv-voorbeeld",
     "preview.retry": "Opnieuw proberen",
+    "preview.pageView": "Paginaweergave",
+    "preview.continuousView": "Doorlopende weergave",
+    "preview.generatingPages": "Pagina's worden gegenereerd...",
 
     "richtext.bold": "Vet",
     "richtext.italic": "Cursief",
@@ -1195,6 +1216,9 @@ const pl = {
     "preview.previewFailed": "Podgląd nie powiódł się: {message}",
     "preview.title": "Podgląd CV",
     "preview.retry": "Spróbuj ponownie",
+    "preview.pageView": "Widok stron",
+    "preview.continuousView": "Widok ciągły",
+    "preview.generatingPages": "Generowanie stron...",
 
     "richtext.bold": "Pogrubienie",
     "richtext.italic": "Kursywa",
@@ -1345,6 +1369,9 @@ const tr = {
     "preview.previewFailed": "Önizleme başarısız oldu: {message}",
     "preview.title": "Özgeçmiş önizlemesi",
     "preview.retry": "Tekrar dene",
+    "preview.pageView": "Sayfa görünümü",
+    "preview.continuousView": "Sürekli görünüm",
+    "preview.generatingPages": "Sayfalar oluşturuluyor...",
 
     "richtext.bold": "Kalın",
     "richtext.italic": "İtalik",
@@ -1495,6 +1522,9 @@ const ru = {
     "preview.previewFailed": "Ошибка предпросмотра: {message}",
     "preview.title": "Предпросмотр резюме",
     "preview.retry": "Повторить",
+    "preview.pageView": "Постраничный вид",
+    "preview.continuousView": "Непрерывный вид",
+    "preview.generatingPages": "Создание страниц...",
 
     "richtext.bold": "Жирный",
     "richtext.italic": "Курсив",
@@ -1645,6 +1675,9 @@ const ar = {
     "preview.previewFailed": "فشلت المعاينة: {message}",
     "preview.title": "معاينة السيرة الذاتية",
     "preview.retry": "إعادة المحاولة",
+    "preview.pageView": "عرض الصفحات",
+    "preview.continuousView": "عرض متواصل",
+    "preview.generatingPages": "جارٍ إنشاء الصفحات...",
 
     "richtext.bold": "عريض",
     "richtext.italic": "مائل",
@@ -1795,6 +1828,9 @@ const zh = {
     "preview.previewFailed": "预览失败：{message}",
     "preview.title": "简历预览",
     "preview.retry": "重试",
+    "preview.pageView": "分页视图",
+    "preview.continuousView": "连续视图",
+    "preview.generatingPages": "正在生成页面...",
 
     "richtext.bold": "粗体",
     "richtext.italic": "斜体",

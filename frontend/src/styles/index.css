@@ -1010,6 +1010,31 @@ input[type="range"]::-moz-range-track {
     transform-origin: top center;
 }
 
+.preview-toolbar .preview-mode-toggle {
+    width: auto;
+    height: auto;
+    border-radius: 999px;
+    padding: 5px 14px;
+    margin-left: 4px;
+    font-size: 12.5px;
+    font-weight: 600;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+}
+
+.preview-toolbar .preview-mode-toggle.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.preview-loading {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
 /* --- ATS panel --- */
 
 .ats-results {
