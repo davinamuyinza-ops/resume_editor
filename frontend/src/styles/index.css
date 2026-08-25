@@ -606,13 +606,18 @@ button {
     font-size: 12px;
     font-weight: 600;
     color: var(--muted);
+    min-width: 0;
 }
 
 .item-field-full {
     grid-column: 1 / -1;
 }
 
-.item-field input {
+.item-field input,
+.item-field select,
+.item-field textarea {
+    width: 100%;
+    min-width: 0;
     padding: 7px 9px;
     border-radius: 6px;
     border: 1px solid var(--border);
