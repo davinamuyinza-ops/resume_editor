@@ -979,6 +979,21 @@ input[type="range"]::-moz-range-track {
 .preview-error {
     color: #dc2626;
     font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.preview-retry-button {
+    border: 1px solid #dc2626;
+    background: white;
+    color: #dc2626;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 .preview-page-stack {

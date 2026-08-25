@@ -12,6 +12,7 @@ export default function PreviewPane() {
     const [html, setHtml] = useState("");
     const [error, setError] = useState("");
     const [zoom, setZoom] = useState(0.75);
+    const [retryTick, setRetryTick] = useState(0);
     const debounceRef = useRef(null);
 
     useEffect(() => {
@@ -36,7 +37,7 @@ export default function PreviewPane() {
         }, DEBOUNCE_MS);
 
         return () => clearTimeout(debounceRef.current);
-    }, [resume]);
+    }, [resume, retryTick]);
 
     return (
         <div className="preview-pane">
@@ -45,7 +46,14 @@ export default function PreviewPane() {
                 <span>{Math.round(zoom * 100)}%</span>
                 <button onClick={() => setZoom((z) => Math.min(1.2, z + 0.1))}>+</button>
             </div>
-            {error && <p className="preview-error">{error}</p>}
+            {error && (
+                <p className="preview-error">
+                    {error}
+                    <button className="preview-retry-button" onClick={() => setRetryTick((n) => n + 1)}>
+                        {t("preview.retry")}
+                    </button>
+                </p>
+            )}
             <div className="preview-page-stack">
                 <iframe
                     title={t("preview.title")}

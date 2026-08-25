@@ -144,6 +144,7 @@ const en = {
     "preview.cantReachBackend": "Can't reach the backend at http://127.0.0.1:8200 - is it running?",
     "preview.previewFailed": "Preview failed: {message}",
     "preview.title": "Resume preview",
+    "preview.retry": "Retry",
 
     "richtext.bold": "Bold",
     "richtext.italic": "Italic",
@@ -293,6 +294,7 @@ const de = {
     "preview.cantReachBackend": "Server nicht erreichbar unter http://127.0.0.1:8200 - läuft er?",
     "preview.previewFailed": "Vorschau fehlgeschlagen: {message}",
     "preview.title": "Lebenslauf-Vorschau",
+    "preview.retry": "Erneut versuchen",
 
     "richtext.bold": "Fett",
     "richtext.italic": "Kursiv",
@@ -442,6 +444,7 @@ const fr = {
     "preview.cantReachBackend": "Impossible d'atteindre le serveur à http://127.0.0.1:8200 - est-il en cours d'exécution ?",
     "preview.previewFailed": "Échec de l'aperçu : {message}",
     "preview.title": "Aperçu du CV",
+    "preview.retry": "Réessayer",
 
     "richtext.bold": "Gras",
     "richtext.italic": "Italique",
@@ -591,6 +594,7 @@ const es = {
     "preview.cantReachBackend": "No se puede conectar con el servidor en http://127.0.0.1:8200 - ¿está en ejecución?",
     "preview.previewFailed": "Error en la vista previa: {message}",
     "preview.title": "Vista previa del CV",
+    "preview.retry": "Reintentar",
 
     "richtext.bold": "Negrita",
     "richtext.italic": "Cursiva",
@@ -740,6 +744,7 @@ const pt = {
     "preview.cantReachBackend": "Não é possível contactar o servidor em http://127.0.0.1:8200 - está em execução?",
     "preview.previewFailed": "Falha na pré-visualização: {message}",
     "preview.title": "Pré-visualização do currículo",
+    "preview.retry": "Tentar novamente",
 
     "richtext.bold": "Negrito",
     "richtext.italic": "Itálico",
@@ -889,6 +894,7 @@ const it = {
     "preview.cantReachBackend": "Impossibile raggiungere il server su http://127.0.0.1:8200 - è in esecuzione?",
     "preview.previewFailed": "Anteprima non riuscita: {message}",
     "preview.title": "Anteprima del CV",
+    "preview.retry": "Riprova",
 
     "richtext.bold": "Grassetto",
     "richtext.italic": "Corsivo",
@@ -1038,6 +1044,7 @@ const nl = {
     "preview.cantReachBackend": "Kan de server op http://127.0.0.1:8200 niet bereiken - draait deze wel?",
     "preview.previewFailed": "Voorbeeld mislukt: {message}",
     "preview.title": "Cv-voorbeeld",
+    "preview.retry": "Opnieuw proberen",
 
     "richtext.bold": "Vet",
     "richtext.italic": "Cursief",
@@ -1187,6 +1194,7 @@ const pl = {
     "preview.cantReachBackend": "Nie można połączyć się z serwerem pod adresem http://127.0.0.1:8200 - czy działa?",
     "preview.previewFailed": "Podgląd nie powiódł się: {message}",
     "preview.title": "Podgląd CV",
+    "preview.retry": "Spróbuj ponownie",
 
     "richtext.bold": "Pogrubienie",
     "richtext.italic": "Kursywa",
@@ -1336,6 +1344,7 @@ const tr = {
     "preview.cantReachBackend": "http://127.0.0.1:8200 adresindeki sunucuya ulaşılamıyor - çalışıyor mu?",
     "preview.previewFailed": "Önizleme başarısız oldu: {message}",
     "preview.title": "Özgeçmiş önizlemesi",
+    "preview.retry": "Tekrar dene",
 
     "richtext.bold": "Kalın",
     "richtext.italic": "İtalik",
@@ -1485,6 +1494,7 @@ const ru = {
     "preview.cantReachBackend": "Не удаётся подключиться к серверу по адресу http://127.0.0.1:8200 - он запущен?",
     "preview.previewFailed": "Ошибка предпросмотра: {message}",
     "preview.title": "Предпросмотр резюме",
+    "preview.retry": "Повторить",
 
     "richtext.bold": "Жирный",
     "richtext.italic": "Курсив",
@@ -1634,6 +1644,7 @@ const ar = {
     "preview.cantReachBackend": "تعذّر الوصول إلى الخادم على http://127.0.0.1:8200 - هل هو قيد التشغيل؟",
     "preview.previewFailed": "فشلت المعاينة: {message}",
     "preview.title": "معاينة السيرة الذاتية",
+    "preview.retry": "إعادة المحاولة",
 
     "richtext.bold": "عريض",
     "richtext.italic": "مائل",
@@ -1783,6 +1794,7 @@ const zh = {
     "preview.cantReachBackend": "无法连接到 http://127.0.0.1:8200 上的服务器 —— 它正在运行吗？",
     "preview.previewFailed": "预览失败：{message}",
     "preview.title": "简历预览",
+    "preview.retry": "重试",
 
     "richtext.bold": "粗体",
     "richtext.italic": "斜体",
