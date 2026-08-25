@@ -1,6 +1,5 @@
 from pathlib import Path
 
-from fastapi import HTTPException
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from playwright.sync_api import sync_playwright
 
@@ -72,11 +71,11 @@ def render_resume_html(resume_json: dict) -> str:
     metadata = resume_json.get("metadata") or {}
     template_name = metadata.get("template", "classic")
 
+    # Resume JSON can arrive from other tools (the main app, real Reactive
+    # Resume exports) carrying template names this editor doesn't have -
+    # fall back to a known default rather than hard-failing the preview.
     if template_name not in ALLOWED_TEMPLATES:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Unknown template '{template_name}'. Choose one of: {', '.join(sorted(ALLOWED_TEMPLATES))}",
-        )
+        template_name = "classic"
 
     jinja_template = _jinja_env.get_template(f"{template_name}.html")
     style = _resolve_style(resume_json)
