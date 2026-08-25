@@ -12,6 +12,11 @@ class ResumeRequest(BaseModel):
     resume_json: dict
 
 
+class AtsCheckRequest(BaseModel):
+    resume_json: dict
+    job_description: str | None = None
+
+
 @router.post("/render-preview")
 def render_preview(payload: ResumeRequest):
     html_content = render_resume_html(payload.resume_json)
@@ -29,5 +34,5 @@ def export_pdf(payload: ResumeRequest):
 
 
 @router.post("/ats-check")
-def ats_check(payload: ResumeRequest):
-    return check_ats_friendliness(payload.resume_json)
+def ats_check(payload: AtsCheckRequest):
+    return check_ats_friendliness(payload.resume_json, payload.job_description)

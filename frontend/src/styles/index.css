@@ -1063,9 +1063,84 @@ input[type="range"]::-moz-range-track {
 
 /* --- ATS panel --- */
 
+.ats-panel .item-field {
+    margin-bottom: 12px;
+}
+
+.ats-panel textarea {
+    resize: vertical;
+    font-family: inherit;
+}
+
 .ats-results {
     margin-top: 16px;
 }
+
+.ats-score-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.ats-score-badge {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.ats-score-badge.score-good { background: #dcfce7; color: #15803d; }
+.ats-score-badge.score-medium { background: #fef3c7; color: #b45309; }
+.ats-score-badge.score-poor { background: #fee2e2; color: #b91c1c; }
+
+.ats-score-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.ats-keyword-match {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 16px;
+}
+
+.ats-keyword-group {
+    margin-top: 10px;
+}
+
+.ats-keyword-group-title {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+
+.ats-keyword-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.ats-keyword-chip {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 999px;
+}
+
+.ats-keyword-chip.matched { background: #dcfce7; color: #15803d; }
+.ats-keyword-chip.missing { background: #fee2e2; color: #b91c1c; }
 
 .ats-findings {
     list-style: none;

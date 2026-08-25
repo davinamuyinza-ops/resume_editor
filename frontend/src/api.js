@@ -39,11 +39,11 @@ export async function exportPdf(resumeJson) {
     return response.blob();
 }
 
-export async function checkAts(resumeJson) {
+export async function checkAts(resumeJson, jobDescription) {
     const response = await fetch(`${API_BASE_URL}/ats-check`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ resume_json: resumeJson }),
+        body: JSON.stringify({ resume_json: resumeJson, job_description: jobDescription || null }),
     });
 
     if (!response.ok) {
