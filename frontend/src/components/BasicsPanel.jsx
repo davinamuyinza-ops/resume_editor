@@ -11,6 +11,36 @@ const ICON_OPTIONS = [
     { value: "email", labelKey: "basics.iconEmail" },
 ];
 
+// Downscale before embedding as a data URI - a raw phone photo can be several
+// MB, which would bloat the resume JSON and slow down PDF export.
+function resizeImageFile(file, maxDimension = 500, quality = 0.85) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const img = new Image();
+            img.onload = () => {
+                let { width, height } = img;
+                if (width > height && width > maxDimension) {
+                    height = Math.round((height * maxDimension) / width);
+                    width = maxDimension;
+                } else if (height > maxDimension) {
+                    width = Math.round((width * maxDimension) / height);
+                    height = maxDimension;
+                }
+                const canvas = document.createElement("canvas");
+                canvas.width = width;
+                canvas.height = height;
+                canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+                resolve(canvas.toDataURL("image/jpeg", quality));
+            };
+            img.onerror = reject;
+            img.src = reader.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
 export default function BasicsPanel() {
     const resume = useResumeStore((state) => state.resume);
     const updateBasicsField = useResumeStore((state) => state.updateBasicsField);
@@ -25,6 +55,14 @@ export default function BasicsPanel() {
     const website = basics.website || {};
     const customFields = basics.customFields || [];
     const picture = resume.picture || {};
+
+    async function handlePhotoFileChange(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const dataUrl = await resizeImageFile(file);
+        updatePictureField("url", dataUrl);
+        event.target.value = "";
+    }
 
     return (
         <div className="basics-panel">
@@ -50,6 +88,10 @@ export default function BasicsPanel() {
                                 placeholder="https://..."
                                 onChange={(e) => updatePictureField("url", e.target.value)}
                             />
+                        </label>
+                        <label className="item-field item-field-full">
+                            <span>{t("basics.uploadPhoto")}</span>
+                            <input type="file" accept="image/*" onChange={handlePhotoFileChange} />
                         </label>
                         <Slider
                             label={t("basics.size")}

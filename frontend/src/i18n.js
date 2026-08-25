@@ -42,6 +42,7 @@ const en = {
 
     "basics.photo": "Photo",
     "basics.photoUrl": "Photo URL",
+    "basics.uploadPhoto": "Or upload a photo",
     "basics.size": "Size",
     "basics.showPhoto": "Show photo on resume",
     "basics.noPhoto": "No photo",
@@ -190,6 +191,7 @@ const de = {
 
     "basics.photo": "Foto",
     "basics.photoUrl": "Foto-URL",
+    "basics.uploadPhoto": "Oder ein Foto hochladen",
     "basics.size": "Größe",
     "basics.showPhoto": "Foto im Lebenslauf anzeigen",
     "basics.noPhoto": "Kein Foto",
@@ -338,6 +340,7 @@ const fr = {
 
     "basics.photo": "Photo",
     "basics.photoUrl": "URL de la photo",
+    "basics.uploadPhoto": "Ou téléverser une photo",
     "basics.size": "Taille",
     "basics.showPhoto": "Afficher la photo sur le CV",
     "basics.noPhoto": "Aucune photo",
@@ -486,6 +489,7 @@ const es = {
 
     "basics.photo": "Foto",
     "basics.photoUrl": "URL de la foto",
+    "basics.uploadPhoto": "O subir una foto",
     "basics.size": "Tamaño",
     "basics.showPhoto": "Mostrar foto en el CV",
     "basics.noPhoto": "Sin foto",
@@ -634,6 +638,7 @@ const pt = {
 
     "basics.photo": "Foto",
     "basics.photoUrl": "URL da foto",
+    "basics.uploadPhoto": "Ou carregar uma foto",
     "basics.size": "Tamanho",
     "basics.showPhoto": "Mostrar foto no currículo",
     "basics.noPhoto": "Sem foto",
@@ -782,6 +787,7 @@ const it = {
 
     "basics.photo": "Foto",
     "basics.photoUrl": "URL della foto",
+    "basics.uploadPhoto": "Oppure carica una foto",
     "basics.size": "Dimensione",
     "basics.showPhoto": "Mostra la foto nel CV",
     "basics.noPhoto": "Nessuna foto",
@@ -930,6 +936,7 @@ const nl = {
 
     "basics.photo": "Foto",
     "basics.photoUrl": "Foto-URL",
+    "basics.uploadPhoto": "Of een foto uploaden",
     "basics.size": "Grootte",
     "basics.showPhoto": "Foto op cv weergeven",
     "basics.noPhoto": "Geen foto",
@@ -1078,6 +1085,7 @@ const pl = {
 
     "basics.photo": "Zdjęcie",
     "basics.photoUrl": "URL zdjęcia",
+    "basics.uploadPhoto": "Lub prześlij zdjęcie",
     "basics.size": "Rozmiar",
     "basics.showPhoto": "Pokaż zdjęcie na CV",
     "basics.noPhoto": "Brak zdjęcia",
@@ -1226,6 +1234,7 @@ const tr = {
 
     "basics.photo": "Fotoğraf",
     "basics.photoUrl": "Fotoğraf URL'si",
+    "basics.uploadPhoto": "Veya bir fotoğraf yükleyin",
     "basics.size": "Boyut",
     "basics.showPhoto": "Özgeçmişte fotoğrafı göster",
     "basics.noPhoto": "Fotoğraf yok",
@@ -1374,6 +1383,7 @@ const ru = {
 
     "basics.photo": "Фото",
     "basics.photoUrl": "URL фото",
+    "basics.uploadPhoto": "Или загрузить фото",
     "basics.size": "Размер",
     "basics.showPhoto": "Показывать фото в резюме",
     "basics.noPhoto": "Нет фото",
@@ -1522,6 +1532,7 @@ const ar = {
 
     "basics.photo": "الصورة",
     "basics.photoUrl": "رابط الصورة",
+    "basics.uploadPhoto": "أو تحميل صورة",
     "basics.size": "الحجم",
     "basics.showPhoto": "إظهار الصورة في السيرة الذاتية",
     "basics.noPhoto": "لا توجد صورة",
@@ -1670,6 +1681,7 @@ const zh = {
 
     "basics.photo": "照片",
     "basics.photoUrl": "照片链接",
+    "basics.uploadPhoto": "或上传照片",
     "basics.size": "大小",
     "basics.showPhoto": "在简历上显示照片",
     "basics.noPhoto": "无照片",
