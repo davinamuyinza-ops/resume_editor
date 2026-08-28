@@ -119,7 +119,7 @@ export default function EditorLayout() {
                         ))}
                     </select>
                     <button onClick={handleDownloadJson} className="secondary-action">{t("topbar.downloadJson")}</button>
-                    <button onClick={handleExportPdf} className="primary-action" disabled={exporting}>
+                    <button onClick={handleExportPdf} className="primary-action hero-action" disabled={exporting}>
                         {exporting ? t("topbar.exporting") : t("topbar.exportPdf")}
                     </button>
                 </div>

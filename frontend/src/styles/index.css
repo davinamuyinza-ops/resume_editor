@@ -72,12 +72,9 @@ button, select, input, .item-menu-trigger, .drag-handle {
 
 .entry-card h1 {
     margin: 0 0 8px 0;
-    background: var(--gradient-primary);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-size: 27px;
-    font-weight: 800;
+    color: var(--accent);
+    font-size: 26px;
+    font-weight: 700;
 }
 
 .entry-subtitle {
@@ -128,18 +125,17 @@ button, select, input, .item-menu-trigger, .drag-handle {
 }
 
 .primary-action {
-    background: var(--gradient-primary);
-    background-size: 200% 200%;
+    background: var(--accent);
     color: white;
     width: 100%;
     justify-content: center;
-    box-shadow: 0 6px 16px rgba(91, 61, 240, 0.32);
+    box-shadow: 0 4px 12px rgba(91, 61, 240, 0.24);
 }
 
 .primary-action:hover:not(:disabled) {
+    background: #4c2fe0;
     transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(91, 61, 240, 0.4);
-    background-position: 100% 50%;
+    box-shadow: 0 8px 18px rgba(91, 61, 240, 0.32);
 }
 
 .primary-action:active:not(:disabled) {
@@ -149,6 +145,19 @@ button, select, input, .item-menu-trigger, .drag-handle {
 .primary-action:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+/* Reserved for the single most important action per screen (Export PDF) -
+   everything else stays a solid, confident accent so this keeps its punch. */
+.hero-action {
+    background: var(--gradient-primary);
+    background-size: 200% 200%;
+    box-shadow: 0 6px 18px rgba(91, 61, 240, 0.35);
+}
+
+.hero-action:hover:not(:disabled) {
+    background-position: 100% 50%;
+    box-shadow: 0 10px 26px rgba(91, 61, 240, 0.42);
 }
 
 .secondary-action {
@@ -178,18 +187,14 @@ button, select, input, .item-menu-trigger, .drag-handle {
     padding: 12px 22px;
     background: var(--panel-bg);
     border-bottom: 1px solid var(--border);
-    border-top: 3px solid transparent;
-    border-image: var(--gradient-primary) 1;
+    border-top: 2px solid var(--accent);
     box-shadow: 0 2px 14px rgba(91, 61, 240, 0.07);
 }
 
 .editor-brand {
-    font-weight: 800;
+    font-weight: 700;
     font-size: 17px;
-    background: var(--gradient-primary);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--accent);
 }
 
 .editor-topbar-actions {
@@ -277,7 +282,7 @@ button, select, input, .item-menu-trigger, .drag-handle {
 .completion-meter-fill {
     height: 100%;
     border-radius: 999px;
-    background: var(--gradient-primary);
+    background: var(--accent);
     transition: width 0.5s var(--ease);
 }
 
@@ -356,7 +361,7 @@ button, select, input, .item-menu-trigger, .drag-handle {
 
 .editor-tabs button.active {
     color: var(--accent);
-    border-image: var(--gradient-primary) 1;
+    border-bottom-color: var(--accent);
 }
 
 .editor-tab-content {
@@ -381,7 +386,7 @@ button, select, input, .item-menu-trigger, .drag-handle {
 .add-item-form {
     margin: 14px;
     padding: 14px;
-    background: linear-gradient(160deg, var(--accent-soft) 0%, var(--accent-warm-soft) 100%);
+    background: linear-gradient(160deg, #ffffff 0%, #ddd0fb 100%);
     border: 1px solid #ddd0fb;
     border-radius: 12px;
 }
@@ -1002,6 +1007,7 @@ input[type="range"] {
     border-radius: 999px;
     background: linear-gradient(
         to right,
+        #c7b9fa 0%,
         var(--accent) var(--range-progress, 50%),
         #e2e8f0 var(--range-progress, 50%)
     );
@@ -1196,7 +1202,7 @@ input[type="range"]::-moz-range-track {
 }
 
 .preview-toolbar .preview-mode-toggle.active {
-    background: var(--gradient-primary);
+    background: var(--accent);
     color: white;
     border-color: transparent;
 }
