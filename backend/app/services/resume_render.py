@@ -67,7 +67,7 @@ def _resolve_section_order(resume_json: dict) -> list:
     return DEFAULT_SECTION_ORDER
 
 
-def render_resume_html(resume_json: dict) -> str:
+def render_resume_html(resume_json: dict, for_print: bool = False) -> str:
     metadata = resume_json.get("metadata") or {}
     template_name = metadata.get("template", "classic")
 
@@ -81,11 +81,20 @@ def render_resume_html(resume_json: dict) -> str:
     style = _resolve_style(resume_json)
     section_order = _resolve_section_order(resume_json)
 
-    return jinja_template.render(resume=resume_json, style=style, section_order=section_order)
+    return jinja_template.render(
+        resume=resume_json, style=style, section_order=section_order, for_print=for_print
+    )
 
 
 def render_resume_pdf(resume_json: dict) -> bytes:
-    html_content = render_resume_html(resume_json)
+    # CSS padding on a fragmented box (like <body>) only renders at the very
+    # start and end of the whole flow, not at each internal page break - so
+    # margin has to come from real @page margin here, which Chromium's print
+    # engine does repeat on every page. The plain HTML preview has no such
+    # per-page concept, so it keeps using body padding (see the templates'
+    # `for_print` branch) - switching both to @page would leave the preview
+    # with no visible margin at all, since @page is a print-only rule.
+    html_content = render_resume_html(resume_json, for_print=True)
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()

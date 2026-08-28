@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700;900&family=Open+Sans:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700;900&family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Nunito:wght@300;400;500;600;700;800&family=Raleway:wght@300;400;500;600;700;800&family=Merriweather:wght@300;400;700;900&family=Playfair+Display:wght@400;500;600;700;800&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 {% autoescape false %}
-    @page { size: {{ style.pageSize }}; margin: 0; }
+    @page { size: {{ style.pageSize }}; margin: {% if for_print %}{{ style.margin }}{% else %}0{% endif %}; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
         font-family: {{ style.fontFamily }};
@@ -22,11 +22,11 @@
         width: 34%;
         background: {{ style.primaryColor }};
         color: white;
-        padding: {{ style.margin }};
+        padding: {% if for_print %}0{% else %}{{ style.margin }}{% endif %};
     }
     .main {
         width: 66%;
-        padding: {{ style.margin }};
+        padding: {% if for_print %}0{% else %}{{ style.margin }}{% endif %};
     }
     .photo { width: {{ resume.picture.size or 90 }}px; height: {{ resume.picture.size or 90 }}px; border-radius: 0; object-fit: cover; margin-bottom: 16px; }
     h1 {
