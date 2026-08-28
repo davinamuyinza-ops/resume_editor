@@ -16,7 +16,7 @@ export const LANGUAGES = [
 ];
 
 const en = {
-    "entry.title": "AI Resume Design Editor",
+    "entry.title": "Resume Editor",
     "entry.subtitle": "Load a resume JSON to start designing - drag sections, adjust fonts and colors, and export a polished PDF.",
     "entry.loadSample": "Load Sample Resume",
     "entry.or": "or",
@@ -178,7 +178,7 @@ const en = {
 };
 
 const de = {
-    "entry.title": "KI Lebenslauf-Designer",
+    "entry.title": "Lebenslauf-Editor",
     "entry.subtitle": "Laden Sie eine Lebenslauf-JSON-Datei, um mit dem Design zu beginnen - Abschnitte verschieben, Schriftarten und Farben anpassen und ein fertiges PDF exportieren.",
     "entry.loadSample": "Beispiel-Lebenslauf laden",
     "entry.or": "oder",
@@ -340,7 +340,7 @@ const de = {
 };
 
 const fr = {
-    "entry.title": "Éditeur de CV IA",
+    "entry.title": "Éditeur de CV",
     "entry.subtitle": "Chargez un CV au format JSON pour commencer à le concevoir - faites glisser les sections, ajustez les polices et les couleurs, et exportez un PDF soigné.",
     "entry.loadSample": "Charger un CV d'exemple",
     "entry.or": "ou",
@@ -502,7 +502,7 @@ const fr = {
 };
 
 const es = {
-    "entry.title": "Editor de Diseño de CV con IA",
+    "entry.title": "Editor de CV",
     "entry.subtitle": "Carga un CV en JSON para empezar a diseñar: arrastra secciones, ajusta fuentes y colores, y exporta un PDF pulido.",
     "entry.loadSample": "Cargar CV de ejemplo",
     "entry.or": "o",
@@ -664,7 +664,7 @@ const es = {
 };
 
 const pt = {
-    "entry.title": "Editor de Design de Currículo com IA",
+    "entry.title": "Editor de Currículo",
     "entry.subtitle": "Carregue um currículo em JSON para começar a criar - arraste secções, ajuste fontes e cores, e exporte um PDF profissional.",
     "entry.loadSample": "Carregar currículo de exemplo",
     "entry.or": "ou",
@@ -826,7 +826,7 @@ const pt = {
 };
 
 const it = {
-    "entry.title": "Editor di Design del CV con IA",
+    "entry.title": "Editor di CV",
     "entry.subtitle": "Carica un CV in formato JSON per iniziare a progettare - trascina le sezioni, regola caratteri e colori ed esporta un PDF curato.",
     "entry.loadSample": "Carica CV di esempio",
     "entry.or": "o",
@@ -988,7 +988,7 @@ const it = {
 };
 
 const nl = {
-    "entry.title": "AI Cv-ontwerpeditor",
+    "entry.title": "Cv-editor",
     "entry.subtitle": "Laad een cv-JSON om te beginnen met ontwerpen - versleep secties, pas lettertypen en kleuren aan en exporteer een verzorgd PDF-bestand.",
     "entry.loadSample": "Voorbeeld-cv laden",
     "entry.or": "of",
@@ -1150,7 +1150,7 @@ const nl = {
 };
 
 const pl = {
-    "entry.title": "Edytor CV z AI",
+    "entry.title": "Edytor CV",
     "entry.subtitle": "Wczytaj CV w formacie JSON, aby zacząć projektować - przeciągaj sekcje, dostosuj czcionki i kolory oraz wyeksportuj dopracowany plik PDF.",
     "entry.loadSample": "Wczytaj przykładowe CV",
     "entry.or": "lub",
@@ -1312,7 +1312,7 @@ const pl = {
 };
 
 const tr = {
-    "entry.title": "AI Özgeçmiş Tasarım Editörü",
+    "entry.title": "Özgeçmiş Editörü",
     "entry.subtitle": "Tasarıma başlamak için bir özgeçmiş JSON'u yükleyin - bölümleri sürükleyin, yazı tiplerini ve renkleri ayarlayın ve düzgün bir PDF dışa aktarın.",
     "entry.loadSample": "Örnek Özgeçmiş Yükle",
     "entry.or": "veya",
@@ -1474,7 +1474,7 @@ const tr = {
 };
 
 const ru = {
-    "entry.title": "Редактор дизайна резюме на основе ИИ",
+    "entry.title": "Редактор резюме",
     "entry.subtitle": "Загрузите резюме в формате JSON, чтобы начать оформление - перетаскивайте разделы, настраивайте шрифты и цвета и экспортируйте готовый PDF.",
     "entry.loadSample": "Загрузить пример резюме",
     "entry.or": "или",
@@ -1636,7 +1636,7 @@ const ru = {
 };
 
 const ar = {
-    "entry.title": "محرر تصميم السيرة الذاتية بالذكاء الاصطناعي",
+    "entry.title": "محرر السيرة الذاتية",
     "entry.subtitle": "قم بتحميل ملف JSON للسيرة الذاتية لبدء التصميم - اسحب الأقسام، واضبط الخطوط والألوان، وصدّر ملف PDF أنيقًا.",
     "entry.loadSample": "تحميل سيرة ذاتية نموذجية",
     "entry.or": "أو",
@@ -1798,7 +1798,7 @@ const ar = {
 };
 
 const zh = {
-    "entry.title": "AI 简历设计编辑器",
+    "entry.title": "简历编辑器",
     "entry.subtitle": "加载简历 JSON 即可开始设计——拖动各部分、调整字体和颜色，并导出精美的 PDF。",
     "entry.loadSample": "加载示例简历",
     "entry.or": "或",

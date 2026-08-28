@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.routers import resume
 
-app = FastAPI(title="AI Resume Design Editor")
+app = FastAPI(title="Resume Editor")
 
 app.add_middleware(
     CORSMiddleware,
