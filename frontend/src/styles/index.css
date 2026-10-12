@@ -435,44 +435,6 @@ button, select, input, .item-menu-trigger, .drag-handle {
     width: 100%;
 }
 
-.item-toolbar {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.item-toolbar button {
-    border: 1px solid var(--border);
-    background: white;
-    border-radius: 6px;
-    padding: 4px 9px;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--ink);
-}
-
-.item-toolbar button:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-}
-
-.item-toolbar .visibility-toggle {
-    border: none;
-}
-
-.delete-item-button {
-    background: #fee2e2 !important;
-    color: #b91c1c !important;
-    border-color: transparent !important;
-}
-
-.item-card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
 .section-row {
     border-bottom: 1px solid var(--border);
 }
@@ -517,21 +479,6 @@ button, select, input, .item-menu-trigger, .drag-handle {
 .chevron {
     display: inline-block;
     width: 12px;
-    color: var(--muted);
-}
-
-.visibility-toggle {
-    border: none;
-    border-radius: 999px;
-    background: var(--accent-soft);
-    color: var(--accent);
-    font-size: 11.5px;
-    font-weight: 700;
-    padding: 4px 10px;
-}
-
-.visibility-toggle.hidden-state {
-    background: #f1f5f9;
     color: var(--muted);
 }
 
@@ -782,12 +729,6 @@ button, select, input, .item-menu-trigger, .drag-handle {
     border-radius: 6px;
     border: 1px solid var(--border);
     font-size: 12.5px;
-}
-
-.section-note {
-    color: var(--muted);
-    font-size: 13px;
-    font-style: italic;
 }
 
 /* --- Rich text editor --- */
