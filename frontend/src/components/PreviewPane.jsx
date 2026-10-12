@@ -18,6 +18,7 @@ export default function PreviewPane() {
     const [pdfBytes, setPdfBytes] = useState(null);
     const [pageView, setPageView] = useState(false);
     const [pdfLoading, setPdfLoading] = useState(false);
+    const [htmlLoading, setHtmlLoading] = useState(false);
     const [error, setError] = useState("");
     const [zoom, setZoom] = useState(0.75);
     const [retryTick, setRetryTick] = useState(0);
@@ -50,13 +51,19 @@ export default function PreviewPane() {
                     .finally(() => setPdfLoading(false));
             }, PDF_DEBOUNCE_MS);
         } else {
+            // Set immediately (not inside the timeout) so the indicator covers
+            // the debounce wait too - the user sees feedback the moment they
+            // make a change, not just once the request finally goes out.
+            setHtmlLoading(true);
+
             debounceRef.current = setTimeout(() => {
                 renderPreview(resume)
                     .then((result) => {
                         setHtml(result);
                         setError("");
                     })
-                    .catch(handleFailure);
+                    .catch(handleFailure)
+                    .finally(() => setHtmlLoading(false));
             }, HTML_DEBOUNCE_MS);
         }
 
@@ -89,6 +96,13 @@ export default function PreviewPane() {
             )}
 
             <div className="preview-page-stack">
+                {!pageView && htmlLoading && (
+                    <div className="preview-updating-badge">
+                        <span className="preview-updating-spinner" />
+                        {t("preview.updatingPreview")}
+                    </div>
+                )}
+
                 {pageView ? (
                     pdfBytes && <PdfPageView pdfBytes={pdfBytes} zoom={zoom} />
                 ) : (

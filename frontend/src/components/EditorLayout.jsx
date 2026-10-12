@@ -7,6 +7,7 @@ import PreviewPane from "./PreviewPane.jsx";
 import SectionList from "./SectionList.jsx";
 import StylePanel from "./StylePanel.jsx";
 import { exportPdf } from "../api.js";
+import { isEmbedded, sendResumeToMainApp } from "../embedBridge.js";
 import { useResumeStore } from "../store/resumeStore.js";
 import { LANGUAGES, useTranslation } from "../i18n.js";
 
@@ -88,6 +89,11 @@ export default function EditorLayout() {
         }
     }
 
+    function handleSaveToMainApp() {
+        sendResumeToMainApp(resume);
+        showToast(t("topbar.savedToMainApp"));
+    }
+
     function handleDownloadJson() {
         const jsonString = JSON.stringify(resume, null, 2);
         const blob = new Blob([jsonString], { type: "application/json" });
@@ -119,6 +125,9 @@ export default function EditorLayout() {
                         ))}
                     </select>
                     <button onClick={handleDownloadJson} className="secondary-action">{t("topbar.downloadJson")}</button>
+                    {isEmbedded() && (
+                        <button onClick={handleSaveToMainApp} className="secondary-action">{t("topbar.saveToMainApp")}</button>
+                    )}
                     <button onClick={handleExportPdf} className="primary-action hero-action" disabled={exporting}>
                         {exporting ? t("topbar.exporting") : t("topbar.exportPdf")}
                     </button>

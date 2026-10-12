@@ -39,6 +39,26 @@ export async function exportPdf(resumeJson) {
     return response.blob();
 }
 
+export async function suggestFix(resumeJson, finding, jobDescription) {
+    const response = await fetch(`${API_BASE_URL}/suggest-fix`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            resume_json: resumeJson,
+            finding_id: finding.id,
+            finding_message: finding.message,
+            finding_fix: finding.fix || "",
+            job_description: jobDescription || null,
+        }),
+    });
+
+    if (!response.ok) {
+        throw new Error(await readErrorDetail(response));
+    }
+
+    return response.json();
+}
+
 export async function checkAts(resumeJson, jobDescription) {
     const response = await fetch(`${API_BASE_URL}/ats-check`, {
         method: "POST",

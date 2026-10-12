@@ -1146,6 +1146,38 @@ input[type="range"]::-moz-range-track {
 .preview-page-stack {
     display: flex;
     justify-content: center;
+    position: relative;
+}
+
+.preview-updating-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: rgba(30, 20, 60, 0.85);
+    color: white;
+    font-size: 12.5px;
+    font-weight: 600;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.3);
+    animation: toast-in 0.2s ease;
+}
+
+.preview-updating-spinner {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: white;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 .preview-frame {
@@ -1329,6 +1361,142 @@ input[type="range"]::-moz-range-track {
 .severity-low .ats-severity-badge { background: #e0f2fe; color: #0369a1; }
 .severity-info .ats-severity-badge { background: #f1f5f9; color: var(--muted); }
 
+.ats-checklist {
+    margin-bottom: 16px;
+}
+
+.ats-checklist-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.ats-checklist-header h4 {
+    font-size: 14px;
+    color: var(--ink);
+}
+
+.ats-checklist-progress {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.ats-finding-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.ats-finding-checkbox input[type="checkbox"] {
+    margin-top: 3px;
+    flex-shrink: 0;
+    accent-color: var(--accent);
+    width: 15px;
+    height: 15px;
+}
+
+.ats-finding-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.ats-finding-fix {
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--muted);
+}
+
+.ats-finding-fix strong {
+    color: var(--accent);
+}
+
+.ats-ai-fix-button {
+    margin-top: 8px;
+    margin-left: 25px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid var(--accent-light);
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    cursor: pointer;
+}
+
+.ats-ai-fix-button:hover {
+    background: var(--accent);
+    color: white;
+}
+
+.ats-ai-thinking {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0 0 25px;
+    font-size: 12.5px;
+    color: var(--muted);
+}
+
+.ats-fix-proposal {
+    margin: 10px 0 0 25px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-light);
+    font-size: 12.5px;
+    line-height: 1.5;
+}
+
+.ats-fix-preview {
+    margin: 8px 0 0 0;
+    padding: 8px 10px;
+    border-left: 3px solid var(--accent);
+    background: white;
+    border-radius: 4px;
+    color: var(--ink);
+    max-height: 140px;
+    overflow-y: auto;
+}
+
+.ats-fix-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.ats-fix-apply,
+.ats-fix-reject {
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.ats-fix-apply {
+    border: none;
+    background: var(--accent);
+    color: white;
+}
+
+.ats-fix-reject {
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--muted);
+}
+
+.ats-finding.done {
+    opacity: 0.55;
+}
+
+.ats-finding.done .ats-finding-header {
+    text-decoration: line-through;
+}
+
 .ats-report {
     font-size: 13.5px;
     line-height: 1.6;
@@ -1341,4 +1509,35 @@ input[type="range"]::-moz-range-track {
     font-size: 12px;
     font-style: italic;
     color: var(--muted);
+}
+
+.ats-source-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+}
+
+.ats-source-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.ats-source-preview {
+    margin-bottom: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #f8f7fc;
+    border: 1px solid #e6e1fa;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--muted);
+    max-height: 120px;
+    overflow-y: auto;
 }

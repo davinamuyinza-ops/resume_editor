@@ -83,6 +83,89 @@ relevant to the job description.
 """
 
 
+AI_FIX_PROMPT = """
+You are helping a candidate fix ONE specific ATS-compatibility issue in their
+resume. You will receive JSON with: the full resume ("resume_json"), the
+finding being addressed ("finding_id", "finding_message", "finding_fix"), and
+optionally the target "job_description".
+
+Propose concrete edits using ONLY these actions (each maps to a real editor
+operation):
+
+- {"action": "updateSummaryContent", "content": "<p>HTML</p>"}
+- {"action": "updateSectionTitle", "sectionKey": "skills", "title": "Skills"}
+- {"action": "updateMetadataField", "field": "fontFamily", "value": "Arial"}
+  (also "template": "classic" to leave a multi-column layout)
+- {"action": "updatePictureField", "field": "hidden", "value": true}
+- {"action": "updateItemField", "sectionKey": "experience", "itemId": "<id from resume_json>", "field": "description", "value": "<ul><li><p>...</p></li></ul>"}
+
+Rules:
+- NEVER invent facts: no made-up contact details, employers, dates, skills, or
+  achievements. Only rephrase, reformat, or reorganize content that is already
+  true in the resume. When adding missing job-description keywords, work them
+  into existing wording only where they honestly describe what the candidate
+  already did; if none honestly fit, don't force them.
+- If the fix needs real information only the candidate has (missing email,
+  missing phone, empty experience section), do NOT propose edits. Return
+  can_fix false and explain what they need to add themselves and where.
+- Keep the resume's existing language; do not translate.
+- Only use itemId values that exist in the provided resume_json.
+- Keep edits minimal - change only what the finding requires.
+
+Return strict JSON only, no markdown, in exactly one of these shapes:
+{"can_fix": true, "explanation": "one or two plain sentences saying what will change and why", "edits": [ ... ]}
+{"can_fix": false, "explanation": "plain-English reason and what the candidate should do"}
+"""
+
+VALID_FIX_ACTIONS = {
+    "updateSummaryContent",
+    "updateSectionTitle",
+    "updateMetadataField",
+    "updatePictureField",
+    "updateItemField",
+}
+
+
+def propose_fix(
+    resume_json: dict,
+    finding_id: str,
+    finding_message: str,
+    finding_fix: str,
+    job_description: str | None = None,
+) -> dict:
+    payload = {
+        "resume_json": resume_json,
+        "finding_id": finding_id,
+        "finding_message": finding_message,
+        "finding_fix": finding_fix,
+    }
+    if job_description and job_description.strip():
+        payload["job_description"] = job_description
+
+    response = client.responses.create(
+        model="gpt-4.1-mini",
+        temperature=0,
+        input=[
+            {"role": "system", "content": AI_FIX_PROMPT},
+            {"role": "user", "content": json.dumps(payload, ensure_ascii=False)},
+        ],
+    )
+
+    result = json.loads(clean_ai_json(response.output_text))
+
+    if not result.get("can_fix"):
+        return {"can_fix": False, "explanation": result.get("explanation", "")}
+
+    # Drop anything outside the known action vocabulary so the frontend never
+    # has to trust the model to stay in bounds.
+    edits = [e for e in result.get("edits", []) if e.get("action") in VALID_FIX_ACTIONS]
+
+    if not edits:
+        return {"can_fix": False, "explanation": result.get("explanation", "")}
+
+    return {"can_fix": True, "explanation": result.get("explanation", ""), "edits": edits}
+
+
 def _run_rule_checks(resume_json: dict) -> list[dict]:
     findings = []
     metadata = resume_json.get("metadata") or {}
@@ -100,6 +183,7 @@ def _run_rule_checks(resume_json: dict) -> list[dict]:
                 "stream, so sidebar content like skills or contact info can end "
                 "up jumbled or lost entirely."
             ),
+            "fix": "Switch to a single-column template (e.g. Classic) in the Style panel.",
         })
 
     email = (basics.get("email") or "").strip()
@@ -113,6 +197,7 @@ def _run_rule_checks(resume_json: dict) -> list[dict]:
                 "missing or malformed email can mean you're never reached even "
                 "if you're otherwise qualified."
             ),
+            "fix": "Add a valid email address in the Profile tab's contact details.",
         })
 
     if not (basics.get("phone") or "").strip():
@@ -123,6 +208,7 @@ def _run_rule_checks(resume_json: dict) -> list[dict]:
                 "No phone number was found. Some ATS systems and most "
                 "recruiters expect this as a standard contact field."
             ),
+            "fix": "Add a phone number in the Profile tab's contact details.",
         })
 
     experience = sections.get("experience") or {}
@@ -135,6 +221,7 @@ def _run_rule_checks(resume_json: dict) -> list[dict]:
                 "section an ATS weighs most heavily, and its absence can cause "
                 "an automatic screen-out regardless of your other qualifications."
             ),
+            "fix": "Add at least one entry to the Experience section, or unhide it in Sections.",
         })
 
     picture = resume_json.get("picture") or {}
@@ -148,6 +235,7 @@ def _run_rule_checks(resume_json: dict) -> list[dict]:
                 "though a photo is common and often expected on CVs in Germany "
                 "and much of Europe, so this may not apply to you."
             ),
+            "fix": "If applying in the US, consider hiding the photo (Profile tab) for that version.",
         })
 
     font_family = (metadata.get("fontFamily") or "").split(",")[0].strip().strip("'\"").lower()
@@ -160,6 +248,7 @@ def _run_rule_checks(resume_json: dict) -> list[dict]:
                 "well-established ATS-safe fonts. Decorative or uncommon fonts "
                 "can render incorrectly or fail to parse in some systems."
             ),
+            "fix": "Switch to a standard font (e.g. Arial, Calibri, Lato) in the Style panel.",
         })
 
     for key, expected_names in STANDARD_SECTION_NAMES.items():
@@ -177,6 +266,7 @@ def _run_rule_checks(resume_json: dict) -> list[dict]:
                     "which isn't a standard heading. Some ATS parsers rely on "
                     "recognizable section titles to categorize content correctly."
                 ),
+                "fix": f"Rename this section's title to something standard, e.g. '{expected_names[0].title()}'.",
             })
 
     has_decorative_bullets = any(
@@ -193,6 +283,7 @@ def _run_rule_checks(resume_json: dict) -> list[dict]:
                 "instead of standard list formatting. These can appear as "
                 "garbled symbols or get dropped entirely by ATS parsers."
             ),
+            "fix": "Replace decorative bullet characters with the plain bullet list formatting in the rich text editor.",
         })
 
     return findings
