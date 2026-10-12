@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { exportPdf, renderPreview } from "../api.js";
+import { AuthError, exportPdf, renderPreview } from "../api.js";
 import { useResumeStore } from "../store/resumeStore.js";
 import { useTranslation } from "../i18n.js";
 import PdfPageView from "./PdfPageView.jsx";
@@ -31,6 +31,12 @@ export default function PreviewPane() {
 
         function handleFailure(err) {
             const isNetworkFailure = err instanceof TypeError;
+
+            if (err instanceof AuthError) {
+                setError(t("session.expired"));
+                return;
+            }
+
             setError(
                 isNetworkFailure
                     ? t("preview.cantReachBackend")

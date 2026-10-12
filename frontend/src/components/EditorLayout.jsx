@@ -6,7 +6,7 @@ import CompletionMeter from "./CompletionMeter.jsx";
 import PreviewPane from "./PreviewPane.jsx";
 import SectionList from "./SectionList.jsx";
 import StylePanel from "./StylePanel.jsx";
-import { exportPdf } from "../api.js";
+import { AuthError, exportPdf } from "../api.js";
 import { isEmbedded, sendResumeToMainApp } from "../embedBridge.js";
 import { useResumeStore } from "../store/resumeStore.js";
 import { LANGUAGES, useTranslation } from "../i18n.js";
@@ -82,8 +82,8 @@ export default function EditorLayout() {
             link.click();
             URL.revokeObjectURL(url);
             showToast(t("topbar.exportSuccess"));
-        } catch {
-            showToast(t("topbar.exportFailed"));
+        } catch (err) {
+            showToast(err instanceof AuthError ? t("session.expired") : t("topbar.exportFailed"));
         } finally {
             setExporting(false);
         }

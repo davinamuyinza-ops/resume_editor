@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { checkAts, suggestFix } from "../api.js";
+import { AuthError, checkAts, suggestFix } from "../api.js";
 import { useResumeStore } from "../store/resumeStore.js";
 import { useSourceJobStore } from "../store/sourceJobStore.js";
 import { useTranslation } from "../i18n.js";
@@ -86,8 +86,8 @@ export default function AtsPanel() {
         try {
             const result = await suggestFix(resume, item, effectiveJobDescription);
             setProposal(item.id, { result });
-        } catch {
-            setProposal(item.id, { error: true });
+        } catch (err) {
+            setProposal(item.id, { error: err instanceof AuthError ? "session" : "failed" });
         }
     }
 
@@ -108,8 +108,8 @@ export default function AtsPanel() {
         try {
             const data = await checkAts(resume, effectiveJobDescription);
             setResult(data);
-        } catch {
-            setError(t("ats.error"));
+        } catch (err) {
+            setError(err instanceof AuthError ? t("session.expired") : t("ats.error"));
         } finally {
             setLoading(false);
         }
@@ -278,7 +278,11 @@ export default function AtsPanel() {
                                                 </p>
                                             )}
 
-                                            {proposal?.error && <p className="entry-error">{t("ats.aiError")}</p>}
+                                            {proposal?.error && (
+                                                <p className="entry-error">
+                                                    {proposal.error === "session" ? t("session.expired") : t("ats.aiError")}
+                                                </p>
+                                            )}
 
                                             {proposed && (
                                                 <div className="ats-fix-proposal">

@@ -4,3 +4,5 @@ jinja2
 playwright
 openai
 pydantic-settings
+python-jose[cryptography]==3.3.0
+requests
